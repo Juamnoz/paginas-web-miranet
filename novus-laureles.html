@@ -1325,6 +1325,38 @@
       .hero-actions { flex-direction: row; justify-content: center; }
       .btn-primary, .btn-ghost { width: auto; }
 
+      /* ── MAX-WIDTH contenedor para secciones de texto ── */
+      .hotel-section > *,
+      .hotel-section .hotel-layout { max-width: 900px; margin-left: auto; margin-right: auto; }
+      .hotel-section { padding: 96px 48px; }
+      .features-list { max-width: 700px; }
+
+      /* ── COFFEE desktop ── */
+      .coffee-title-block {
+        top: 80px;    /* debajo del nav */
+        left: 56px;
+        max-width: 480px;
+      }
+      .coffee-desc-block {
+        bottom: 56px;
+        left: 56px;
+        max-width: 420px;
+      }
+
+      /* ── SLIDER desktop: múltiples tarjetas visibles ── */
+      .slider-slide {
+        flex: 0 0 32vw;
+        max-width: 380px;
+      }
+      .amenities-slider { padding: 0 48px; }
+
+      /* ── EXP CARDS desktop ── */
+      .exp-card {
+        flex: 0 0 26vw;
+        max-width: 320px;
+      }
+      .exp-slider { padding: 0 48px; }
+
       /* ── Desktop: ajustes sobre la base mobile ── */
       nav { padding: 20px 32px; }
       nav.scrolled { padding: 14px 32px; }
