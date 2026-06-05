@@ -1,0 +1,44 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "novuslaureles.miranetsas.com.co" }],
+      "destination": "/miranet-webs/novus/novus-laureles.html"
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "novuslaureles.miranetsas.com.co" }],
+      "destination": "/miranet-webs/novus/$1"
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "orucampestre.miranetsas.com.co" }],
+      "destination": "/miranet-webs/oru-campestre/oru-campestre.html"
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "orucampestre.miranetsas.com.co" }],
+      "destination": "/miranet-webs/oru-campestre/$1"
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "santotomas.miranetsas.com.co" }],
+      "destination": "/miranet-webs/santo-tomas/santo-tomas.html"
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "santotomas.miranetsas.com.co" }],
+      "destination": "/miranet-webs/santo-tomas/$1"
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "tierragrata.miranetsas.com.co" }],
+      "destination": "/miranet-webs/tierra-grata/tierra-grata.html"
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "tierragrata.miranetsas.com.co" }],
+      "destination": "/miranet-webs/tierra-grata/$1"
+    }
+  ]
+}
