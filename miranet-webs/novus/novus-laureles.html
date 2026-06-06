@@ -1688,7 +1688,7 @@
     <div class="room-card reveal reveal-delay-1">
       <div class="room-img-slider" id="roomSliderDoble">
         <div class="room-slides">
-          <img src="assets/hab-doble-1.png" alt="Habitación Doble" class="room-slide-img" loading="lazy"/>
+          <img src="assets/hab-doble-1.png" alt="Habitación Doble" class="room-slide-img" loading="eager"/>
           <img src="assets/hab-doble-2.png" alt="Habitación Doble" class="room-slide-img" loading="lazy"/>
           <img src="assets/hab-doble-3.png" alt="Habitación Doble" class="room-slide-img" loading="lazy"/>
         </div>
@@ -1713,7 +1713,13 @@
 
     <!-- Habitación Triple -->
     <div class="room-card reveal reveal-delay-2">
-      <img src="assets/hab-cuadre.jpeg" alt="Habitación Triple" class="room-img" loading="lazy"/>
+      <div class="room-img-slider" id="roomSliderTriple">
+        <div class="room-slides">
+          <img src="assets/hab-triple-1.png" alt="Habitación Triple" class="room-slide-img" loading="lazy"/>
+          <img src="assets/hab-triple-2.png" alt="Habitación Triple" class="room-slide-img" loading="lazy"/>
+        </div>
+        <div class="room-slide-dots"></div>
+      </div>
       <div class="room-body">
         <p class="room-tag">Para 3 personas</p>
         <h3 class="room-name">Habitación Triple</h3>
@@ -1733,7 +1739,14 @@
 
     <!-- Habitación Cuádruple -->
     <div class="room-card reveal reveal-delay-3">
-      <img src="assets/hab-doble-4.png" alt="Habitación Cuádruple" class="room-img" loading="lazy"/>
+      <div class="room-img-slider" id="roomSliderCuadruple">
+        <div class="room-slides">
+          <img src="assets/hab-cuadruple-1.png" alt="Habitación Cuádruple" class="room-slide-img" loading="lazy"/>
+          <img src="assets/hab-cuadruple-2.png" alt="Habitación Cuádruple" class="room-slide-img" loading="lazy"/>
+          <img src="assets/hab-cuadruple-3.png" alt="Habitación Cuádruple" class="room-slide-img" loading="lazy"/>
+        </div>
+        <div class="room-slide-dots"></div>
+      </div>
       <div class="room-body">
         <p class="room-tag">Para 4 personas</p>
         <h3 class="room-name">Habitación Cuádruple</h3>
@@ -1753,7 +1766,14 @@
 
     <!-- Habitación Quíntuple -->
     <div class="room-card reveal reveal-delay-1">
-      <img src="assets/hab-doble-1.png" alt="Habitación Quíntuple" class="room-img" loading="lazy"/>
+      <div class="room-img-slider" id="roomSliderQuintuple">
+        <div class="room-slides">
+          <img src="assets/hab-quintuple-1.png" alt="Habitación Quíntuple" class="room-slide-img" loading="lazy"/>
+          <img src="assets/hab-quintuple-2.png" alt="Habitación Quíntuple" class="room-slide-img" loading="lazy"/>
+          <img src="assets/hab-quintuple-3.png" alt="Habitación Quíntuple" class="room-slide-img" loading="lazy"/>
+        </div>
+        <div class="room-slide-dots"></div>
+      </div>
       <div class="room-body">
         <p class="room-tag">Para 5 personas</p>
         <h3 class="room-name">Habitación Quíntuple</h3>
@@ -2251,6 +2271,35 @@
       if (Math.abs(diff) > 40) go(cur + (diff > 0 ? 1 : -1));
     });
   })();
+
+  // ── MINI SLIDERS HABITACIONES (Triple, Cuádruple, Quíntuple) ──
+  ['roomSliderTriple','roomSliderCuadruple','roomSliderQuintuple'].forEach(function(id) {
+    var wrap = document.getElementById(id);
+    if (!wrap) return;
+    var slides = wrap.querySelector('.room-slides');
+    var imgs   = wrap.querySelectorAll('.room-slide-img');
+    var dotsEl = wrap.querySelector('.room-slide-dots');
+    var cur = 0;
+    imgs.forEach(function(_, i) {
+      var d = document.createElement('span');
+      if (i === 0) d.classList.add('active');
+      d.addEventListener('click', function() { go(i); });
+      dotsEl.appendChild(d);
+    });
+    var dots = dotsEl.querySelectorAll('span');
+    function go(n) {
+      cur = (n + imgs.length) % imgs.length;
+      slides.style.transform = 'translateX(-' + (cur * 100) + '%)';
+      dots.forEach(function(d, i) { d.classList.toggle('active', i === cur); });
+    }
+    setInterval(function() { go(cur + 1); }, 3200);
+    var startX = 0;
+    wrap.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; }, { passive: true });
+    wrap.addEventListener('touchend',   function(e) {
+      var diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) go(cur + (diff > 0 ? 1 : -1));
+    });
+  });
 
   // ── SLIDER AMENIDADES ─────────────────────────────────────
   (function() {
