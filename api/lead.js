@@ -9,7 +9,8 @@ const PIXEL_MAP = {
   terrabella:  '2775037422862248',
   pomarosa:    '1459620725920196',
   suites44:    '989477617220373',
-  // CEO e History: cuentas desactivadas, pixel pendiente cuando reactiven método de pago
+  ceo:         '1338506288376212',
+  history:     '2486606141789212',
 };
 
 function sha256(v) {
