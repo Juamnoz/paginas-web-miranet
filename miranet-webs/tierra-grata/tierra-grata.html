@@ -6,7 +6,8 @@
   <meta name="description" content="Tierra Grata Eco Hotel & Spa — Bambú, naturaleza y bienestar en un refugio único de Colombia." />
   <title>Tierra Grata · Eco Hotel & Spa</title>
 
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%23060805'/%3E%3Ctext x='32' y='46' text-anchor='middle' font-family='Georgia%2C serif' font-size='28' font-weight='400' fill='%239dc46a' letter-spacing='1'%3ETG%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" type="image/jpeg" href="assets/logo-tierra-grata.jpeg" />
+  <link rel="apple-touch-icon" href="assets/logo-tierra-grata.jpeg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
@@ -74,6 +75,13 @@
       -webkit-backdrop-filter: blur(20px) saturate(1.3);
       padding: 10px 20px;
       border-bottom: 1px solid var(--border);
+    }
+    .nav-logo-img {
+      height: 44px;
+      width: 44px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.45);
     }
     .nav-wordmark {
       display: flex;
@@ -1032,10 +1040,7 @@
 
 <!-- NAV -->
 <nav id="nav">
-  <div class="nav-wordmark">
-    <span class="nav-wordmark-main">Tierra Grata</span>
-    <span class="nav-wordmark-sub">Eco Hotel & Spa</span>
-  </div>
+  <img src="assets/logo-tierra-grata.jpeg" alt="Tierra Grata Glamping & Spa" class="nav-logo-img" />
   <a href="#reservas" class="nav-cta">Reservar</a>
 </nav>
 
@@ -1752,7 +1757,7 @@
       if(v){
         s.view=s.sel?new Date(s.sel):new Date();draw(s);
         var r=s.input.getBoundingClientRect();
-        s.panel.style.top=(r.bottom+window.scrollY+6)+'px';
+        s.panel.style.top=(r.bottom+6)+'px';
         s.panel.style.left=r.left+'px';
         s.panel.style.width=r.width+'px';
       }
