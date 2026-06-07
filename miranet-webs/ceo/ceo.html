@@ -605,7 +605,9 @@
   document.getElementById('leadForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const d = Object.fromEntries(new FormData(this));
-    if (typeof fbq !== 'undefined') fbq('track', 'Lead', { content_name: 'Apartahotel CEO Medellín' });
+    const eventId = 'lead_' + Date.now();
+    if (typeof fbq !== 'undefined') fbq('track', 'Lead', { content_name: 'Apartahotel CEO Medellín', eventID: eventId });
+    fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ hotel: 'ceo', nombre: d.nombre, whatsapp: d.whatsapp, checkin: d.llegada, checkout: d.salida, personas: d.personas, habitacion: d.habitacion, eventId, fbp: document.cookie.match(/_fbp=([^;]+)/)?.[1]||'', fbc: document.cookie.match(/_fbc=([^;]+)/)?.[1]||'' }) }).catch(()=>{});
     const extras = [d.ac ? 'Con aire acondicionado' : 'Con ventilador', d.mascota ? 'Viaja con mascota' : ''].filter(Boolean).join(', ');
     const msg = encodeURIComponent('Hola, soy ' + d.nombre + '. Quiero consultar disponibilidad del ' + d.llegada + ' al ' + d.salida + ' para ' + d.personas + '. Habitación: ' + d.habitacion + (extras ? '. Notas: ' + extras : '') + '. Mi WhatsApp: ' + d.whatsapp);
     window.open('https://wa.me/573022973380?text=' + msg, '_blank');

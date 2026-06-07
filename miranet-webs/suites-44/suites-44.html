@@ -18,11 +18,11 @@
   n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
   t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
   document,'script','https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', 'PIXEL_SUITES44');
+  fbq('init', '1459620725920196');
   fbq('track', 'PageView');
   fbq('track', 'ViewContent', { content_name: 'Hotel Suites 44 Laureles' });
   </script>
-  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=PIXEL_SUITES44&ev=PageView&noscript=1"/></noscript>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1459620725920196&ev=PageView&noscript=1"/></noscript>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -574,7 +574,9 @@
   document.getElementById('leadForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const d = Object.fromEntries(new FormData(this));
-    if (typeof fbq !== 'undefined') fbq('track', 'Lead', { content_name: 'Hotel Suites 44 Laureles' });
+    const eventId = 'lead_' + Date.now();
+    if (typeof fbq !== 'undefined') fbq('track', 'Lead', { content_name: 'Hotel Suites 44 Laureles', eventID: eventId });
+    fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ hotel: 'suites44', nombre: d.nombre, whatsapp: d.whatsapp, checkin: d.llegada, checkout: d.salida, personas: d.personas, habitacion: d.habitacion, eventId, fbp: document.cookie.match(/_fbp=([^;]+)/)?.[1]||'', fbc: document.cookie.match(/_fbc=([^;]+)/)?.[1]||'' }) }).catch(()=>{});
     const msg = encodeURIComponent('Hola, soy ' + d.nombre + '. Quiero consultar disponibilidad del ' + d.llegada + ' al ' + d.salida + ' para ' + d.personas + '. Habitación: ' + d.habitacion + '. Mi WhatsApp: ' + d.whatsapp);
     window.open('https://wa.me/573115781227?text=' + msg, '_blank');
   });
