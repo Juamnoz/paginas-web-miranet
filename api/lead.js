@@ -7,7 +7,6 @@ const PIXEL_MAP = {
   tierragrata: '1021710820800315',
   santotomas:  '1028138033116365',
   terrabella:  '2775037422862248',
-  // Poma Rosa y Suites 44 comparten pixel bajo "Hoteles Ricardo" (CAPI pendiente su token)
   pomarosa:    '1459620725920196',
   suites44:    '1459620725920196',
   // CEO e History: cuentas desactivadas, pixel pendiente cuando reactiven método de pago
