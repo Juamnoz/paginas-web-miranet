@@ -259,7 +259,7 @@ function buildHotelEmailHtml(cfg, data, isAdmin) {
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
               <tr>
                 <td align="center">
-                  <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;color:rgba(255,255,255,0.45);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:14px">Gestionado por</div>
+                  <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;color:#ffffff;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:14px">Gestionado por</div>
                   <table role="presentation" cellpadding="0" cellspacing="0" align="center">
                     <tr>
                       <td style="padding:0 20px;vertical-align:middle">
@@ -273,7 +273,7 @@ function buildHotelEmailHtml(cfg, data, isAdmin) {
                       </td>
                     </tr>
                   </table>
-                  <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;color:rgba(255,255,255,0.35);margin-top:18px;line-height:1.7">
+                  <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;color:#cccccc;margin-top:18px;line-height:1.7">
                     Correo generado automáticamente &nbsp;·&nbsp; No responder directamente<br>
                     © ${year} Miranet Hotels &nbsp;·&nbsp; Medellín, Colombia
                   </div>
