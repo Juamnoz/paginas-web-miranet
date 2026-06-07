@@ -22,8 +22,7 @@ const HOTEL_CONFIG = {
     accent:     '#c8a96a', accentRgb: '200,169,106',
     cream:      '#f2ece0',
     creamDim:   '#b0a690',
-    logoUrl:    null,
-    logoLetter: 'N',
+    logoUrl:    'https://novushoteles.com/wp-content/uploads/2025/07/Novus-Laureles-logo.webp',
     tagline:    'La experiencia más exclusiva · Laureles, Medellín',
     wa:         '573008943465',
   },
@@ -247,7 +246,7 @@ function buildHotelEmailHtml(cfg, data, isAdmin) {
 
         <!-- ─── FOOTER ─── -->
         <tr>
-          <td style="background-color:${bg};border-top:1px solid rgba(255,255,255,0.07);padding:22px 36px 28px" bgcolor="${bg}">
+          <td style="background-color:#1e1e1e;border-top:1px solid rgba(255,255,255,0.07);padding:22px 36px 28px" bgcolor="#1e1e1e">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
               <tr>
                 <td align="center">
@@ -289,7 +288,7 @@ function buildHotelEmailHtml(cfg, data, isAdmin) {
 // ─── Raw email builder (RFC 2822) ────────────────────────────────────────────────
 function buildRawEmail(to, subject, html, fromName) {
   const msg = [
-    `From: "${fromName}" <aicstudioai@gmail.com>`,
+    `From: =?UTF-8?B?${Buffer.from(fromName).toString('base64')}?= <aicstudioai@gmail.com>`,
     `To: ${to}`,
     `Subject: =?UTF-8?B?${Buffer.from(subject).toString('base64')}?=`,
     'MIME-Version: 1.0',
