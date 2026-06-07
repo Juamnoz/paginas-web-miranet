@@ -252,26 +252,28 @@ function buildHotelEmailHtml(cfg, data, isAdmin) {
         </tr>
 
         <!-- ─── FOOTER ─── -->
+        <!-- background-image gradient = Gmail no puede sobreescribirlo como sí hace con background-color -->
         <tr>
-          <td class="email-footer" style="background-color:#2d2d2d;border-top:1px solid rgba(255,255,255,0.12);padding:22px 36px 28px" bgcolor="#2d2d2d">
+          <td class="email-footer" bgcolor="#2d2d2d"
+              style="background-color:#2d2d2d;background-image:linear-gradient(#2d2d2d,#2d2d2d);border-top:2px solid ${accent};padding:24px 36px 28px">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
               <tr>
                 <td align="center">
-                  <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;color:rgba(255,255,255,0.28);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px">Gestionado por</div>
+                  <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;color:rgba(255,255,255,0.45);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:14px">Gestionado por</div>
                   <table role="presentation" cellpadding="0" cellspacing="0" align="center">
                     <tr>
                       <td style="padding:0 20px;vertical-align:middle">
-                        <img src="${FOOTER_LISA_LOGO}" height="28" alt="LISA IA" style="height:28px;display:block;opacity:0.9">
+                        <img src="${FOOTER_LISA_LOGO}" height="28" alt="LISA IA" style="height:28px;display:block">
                       </td>
                       <td style="vertical-align:middle">
-                        <div style="width:1px;height:22px;background-color:rgba(255,255,255,0.14)">&nbsp;</div>
+                        <div style="width:1px;height:22px;background-color:rgba(255,255,255,0.25)">&nbsp;</div>
                       </td>
                       <td style="padding:0 20px;vertical-align:middle">
-                        <img src="${FOOTER_MIRANET_LOGO}" height="24" alt="Miranet" style="height:24px;display:block;opacity:0.9">
+                        <img src="${FOOTER_MIRANET_LOGO}" height="24" alt="Miranet" style="height:24px;display:block">
                       </td>
                     </tr>
                   </table>
-                  <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;color:rgba(255,255,255,0.18);margin-top:18px;line-height:1.7">
+                  <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;color:rgba(255,255,255,0.35);margin-top:18px;line-height:1.7">
                     Correo generado automáticamente &nbsp;·&nbsp; No responder directamente<br>
                     © ${year} Miranet Hotels &nbsp;·&nbsp; Medellín, Colombia
                   </div>
