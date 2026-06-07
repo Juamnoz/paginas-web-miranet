@@ -53,7 +53,7 @@ async function appendToSheets({ hotel, nombre, whatsapp, email, checkin, checkou
 
   await sheets.spreadsheets.values.append({
     spreadsheetId: process.env.SHEETS_ID,
-    range: 'Leads!A:I',
+    range: 'A:I',
     valueInputOption: 'USER_ENTERED',
     requestBody: {
       values: [[
