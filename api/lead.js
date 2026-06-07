@@ -22,8 +22,8 @@ const HOTEL_CONFIG = {
     accent:     '#c8a96a', accentRgb: '200,169,106',
     cream:      '#f2ece0',
     creamDim:   '#b0a690',
-    logoUrl:    'https://novuslaureles.miranetsas.com.co/Novus-Laureles-logo.webp',
-    logoBg:     '#090806',
+    logoUrl:    null,
+    logoHtml:   '<div style="text-align:center;padding:6px 0"><div style="font-family:\'Cormorant Garamond\',Georgia,serif;font-size:27px;font-weight:300;color:#c8a96a;letter-spacing:0.38em;line-height:1">&#9670;NOVUS&#9670;</div><div style="font-family:\'DM Sans\',Arial,sans-serif;font-size:9px;font-weight:400;letter-spacing:0.52em;text-transform:uppercase;color:#c8a96a;margin-top:7px">LAURELES</div></div>',
     tagline:    'La experiencia más exclusiva · Laureles, Medellín',
     wa:         '573008943465',
   },
@@ -156,12 +156,12 @@ function buildHotelEmailHtml(cfg, data, isAdmin) {
   });
   const year = new Date().getFullYear();
 
-  const { logoBg } = cfg;
-  const logoBlock = logoUrl
-    ? `<div style="${logoBg ? `background-color:${logoBg};border-radius:10px;padding:14px 20px;display:inline-block;` : ''}">
-         <img src="${logoUrl}" height="68" alt="${name}" style="height:68px;max-width:220px;object-fit:contain;display:block;margin:0 auto">
-       </div>`
-    : `<div style="display:inline-block;width:68px;height:68px;border-radius:50%;background-color:${bg};border:1.5px solid ${accent};text-align:center;line-height:68px;font-family:'Cormorant Garamond',Georgia,serif;font-size:34px;color:${accent}">${logoLetter || name[0]}</div>`;
+  const { logoHtml: customLogoHtml } = cfg;
+  const logoBlock = customLogoHtml
+    ? customLogoHtml
+    : logoUrl
+      ? `<img src="${logoUrl}" height="68" alt="${name}" style="height:68px;max-width:220px;object-fit:contain;display:block;margin:0 auto;border-radius:6px">`
+      : `<div style="display:inline-block;width:68px;height:68px;border-radius:50%;background-color:${bg};border:1.5px solid ${accent};text-align:center;line-height:68px;font-family:'Cormorant Garamond',Georgia,serif;font-size:34px;color:${accent}">${logoLetter || name[0]}</div>`;
 
   const row = (label, value) => value ? `
           <tr>
@@ -190,7 +190,10 @@ function buildHotelEmailHtml(cfg, data, isAdmin) {
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <title>${name}</title>
 </head>
-<body style="margin:0;padding:0;background-color:${bg};-webkit-font-smoothing:antialiased" bgcolor="${bg}">
+<body id="body" style="margin:0;padding:0;background-color:${bg};-webkit-font-smoothing:antialiased" bgcolor="${bg}">
+<style type="text/css">
+  u + #body .email-footer, #MessageViewBody .email-footer { background-color:#2d2d2d !important; }
+</style>
 
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:${bg}" bgcolor="${bg}">
   <tr>
@@ -250,7 +253,7 @@ function buildHotelEmailHtml(cfg, data, isAdmin) {
 
         <!-- ─── FOOTER ─── -->
         <tr>
-          <td style="background-color:#0a0a0a;border-top:1px solid rgba(255,255,255,0.10);padding:22px 36px 28px" bgcolor="#0a0a0a">
+          <td class="email-footer" style="background-color:#2d2d2d;border-top:1px solid rgba(255,255,255,0.12);padding:22px 36px 28px" bgcolor="#2d2d2d">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
               <tr>
                 <td align="center">
