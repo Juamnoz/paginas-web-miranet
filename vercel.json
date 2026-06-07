@@ -39,6 +39,46 @@
       "source": "/(.*)",
       "has": [{ "type": "host", "value": "tierragrata.miranetsas.com.co" }],
       "destination": "/miranet-webs/tierra-grata/$1"
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "pomarosa.miranetsas.com.co" }],
+      "destination": "/miranet-webs/pomarosa/pomarosa.html"
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "pomarosa.miranetsas.com.co" }],
+      "destination": "/miranet-webs/pomarosa/$1"
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "suites44.miranetsas.com.co" }],
+      "destination": "/miranet-webs/suites-44/suites-44.html"
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "suites44.miranetsas.com.co" }],
+      "destination": "/miranet-webs/suites-44/$1"
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "ceo.miranetsas.com.co" }],
+      "destination": "/miranet-webs/ceo/ceo.html"
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "ceo.miranetsas.com.co" }],
+      "destination": "/miranet-webs/ceo/$1"
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "history.miranetsas.com.co" }],
+      "destination": "/miranet-webs/history/history.html"
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "history.miranetsas.com.co" }],
+      "destination": "/miranet-webs/history/$1"
     }
   ]
 }
