@@ -136,8 +136,9 @@ async function appendToSheets({ hotel, nombre, whatsapp, email, checkin, checkou
   const cfg = HOTEL_CONFIG[hotel];
   await sheets.spreadsheets.values.append({
     spreadsheetId: process.env.SHEETS_ID,
-    range: 'A:I',
+    range: "'Leads hoteles'!A1",
     valueInputOption: 'USER_ENTERED',
+    insertDataOption: 'INSERT_ROWS',
     requestBody: {
       values: [[now, cfg ? cfg.name : hotel, nombre, whatsapp, email || '', checkin, checkout, personas, habitacion]],
     },
