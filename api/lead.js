@@ -22,7 +22,8 @@ const HOTEL_CONFIG = {
     accent:     '#c8a96a', accentRgb: '200,169,106',
     cream:      '#f2ece0',
     creamDim:   '#b0a690',
-    logoUrl:    'https://novushoteles.com/wp-content/uploads/2025/07/Novus-Laureles-logo.webp',
+    logoUrl:    'https://novuslaureles.miranetsas.com.co/Novus-Laureles-logo.webp',
+    logoBg:     '#090806',
     tagline:    'La experiencia más exclusiva · Laureles, Medellín',
     wa:         '573008943465',
   },
@@ -155,8 +156,11 @@ function buildHotelEmailHtml(cfg, data, isAdmin) {
   });
   const year = new Date().getFullYear();
 
+  const { logoBg } = cfg;
   const logoBlock = logoUrl
-    ? `<img src="${logoUrl}" height="72" alt="${name}" style="height:72px;max-width:220px;object-fit:contain;display:block;margin:0 auto;border-radius:6px">`
+    ? `<div style="${logoBg ? `background-color:${logoBg};border-radius:10px;padding:14px 20px;display:inline-block;` : ''}">
+         <img src="${logoUrl}" height="68" alt="${name}" style="height:68px;max-width:220px;object-fit:contain;display:block;margin:0 auto">
+       </div>`
     : `<div style="display:inline-block;width:68px;height:68px;border-radius:50%;background-color:${bg};border:1.5px solid ${accent};text-align:center;line-height:68px;font-family:'Cormorant Garamond',Georgia,serif;font-size:34px;color:${accent}">${logoLetter || name[0]}</div>`;
 
   const row = (label, value) => value ? `
@@ -246,7 +250,7 @@ function buildHotelEmailHtml(cfg, data, isAdmin) {
 
         <!-- ─── FOOTER ─── -->
         <tr>
-          <td style="background-color:#1e1e1e;border-top:1px solid rgba(255,255,255,0.07);padding:22px 36px 28px" bgcolor="#1e1e1e">
+          <td style="background-color:#0a0a0a;border-top:1px solid rgba(255,255,255,0.10);padding:22px 36px 28px" bgcolor="#0a0a0a">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
               <tr>
                 <td align="center">
@@ -254,13 +258,13 @@ function buildHotelEmailHtml(cfg, data, isAdmin) {
                   <table role="presentation" cellpadding="0" cellspacing="0" align="center">
                     <tr>
                       <td style="padding:0 20px;vertical-align:middle">
-                        <img src="${FOOTER_LISA_LOGO}" height="28" alt="LISA IA" style="height:28px;display:block;opacity:0.6">
+                        <img src="${FOOTER_LISA_LOGO}" height="28" alt="LISA IA" style="height:28px;display:block;opacity:0.9">
                       </td>
                       <td style="vertical-align:middle">
                         <div style="width:1px;height:22px;background-color:rgba(255,255,255,0.14)">&nbsp;</div>
                       </td>
                       <td style="padding:0 20px;vertical-align:middle">
-                        <img src="${FOOTER_MIRANET_LOGO}" height="24" alt="Miranet" style="height:24px;display:block;opacity:0.6">
+                        <img src="${FOOTER_MIRANET_LOGO}" height="24" alt="Miranet" style="height:24px;display:block;opacity:0.9">
                       </td>
                     </tr>
                   </table>
