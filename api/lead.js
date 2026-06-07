@@ -8,7 +8,7 @@ const PIXEL_MAP = {
   santotomas:  '1028138033116365',
   terrabella:  '2775037422862248',
   pomarosa:    '1459620725920196',
-  suites44:    '1459620725920196',
+  suites44:    '989477617220373',
   // CEO e History: cuentas desactivadas, pixel pendiente cuando reactiven método de pago
 };
 
