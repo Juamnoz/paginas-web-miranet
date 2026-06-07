@@ -104,6 +104,17 @@ const HOTEL_CONFIG = {
     tagline:    'Confort y hospitalidad · Medellín, Colombia',
     wa:         '573246538020',
   },
+  terrabella: {
+    name:       'Eco Hotel Terrabella',
+    bg:         '#060a07', bgRgb: '6,10,7',
+    surface:    '#0e1509',
+    accent:     '#6aab5a', accentRgb: '106,171,90',
+    cream:      '#f2ede3',
+    creamDim:   '#a8a890',
+    logoUrl:    'https://terrabella.miranetsas.com.co/logo-terrabella-nuevo.jpeg',
+    tagline:    'Eco Hotel · Restaurante · Santa Elena, Antioquia',
+    wa:         '573016430309',
+  },
 };
 
 const FOOTER_LISA_LOGO   = 'https://orucampestre.miranetsas.com.co/assets/lisa-logo.png';
