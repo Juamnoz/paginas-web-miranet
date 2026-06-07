@@ -150,6 +150,11 @@
     .lead-check input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--gold); }
     .lead-submit { display: flex; align-items: center; justify-content: center; gap: 10px; background: #25D366; color: #fff; border: none; border-radius: 100px; padding: 16px 28px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.2s, transform 0.2s; box-shadow: 0 4px 20px rgba(37,211,102,0.3); margin-top: 4px; font-family: var(--font-b); }
     .lead-submit:hover { opacity: 0.9; transform: scale(1.02); }
+    .phone-wrap { display: flex; gap: 6px; }
+    .phone-cc { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 12px 8px; color: var(--cream); font-family: var(--font-b); font-size: 13px; outline: none; transition: border-color 0.2s; flex-shrink: 0; cursor: pointer; appearance: none; -webkit-appearance: none; width: auto; }
+    .phone-cc:focus { border-color: var(--gold); }
+    .phone-cc option { background: #1a1408; }
+    .phone-wrap input { flex: 1; min-width: 0; }
     /* ─── DATEPICKER ─────────────────────────── */
     .dp { position: relative; --dp-accent: var(--gold); }
     .dp-trigger { cursor: pointer !important; caret-color: transparent; }
@@ -500,7 +505,23 @@
     <form class="lead-form" id="leadForm">
       <div class="lead-row">
         <div class="lead-field"><label>Nombre</label><input type="text" name="nombre" placeholder="Tu nombre" required /></div>
-        <div class="lead-field"><label>Tu WhatsApp</label><input type="tel" name="whatsapp" placeholder="+57 300 000 0000" required /></div>
+        <div class="lead-field"><label>Tu WhatsApp</label><div class="phone-wrap">
+                <select name="cc" class="phone-cc">
+                  <option value="+57">🇨🇴 +57</option>
+                  <option value="+1">🇺🇸 +1</option>
+                  <option value="+52">🇲🇽 +52</option>
+                  <option value="+34">🇪🇸 +34</option>
+                  <option value="+58">🇻🇪 +58</option>
+                  <option value="+54">🇦🇷 +54</option>
+                  <option value="+55">🇧🇷 +55</option>
+                  <option value="+56">🇨🇱 +56</option>
+                  <option value="+51">🇵🇪 +51</option>
+                  <option value="+593">🇪🇨 +593</option>
+                  <option value="+507">🇵🇦 +507</option>
+                  <option value="+44">🇬🇧 +44</option>
+                </select>
+                <input type="tel" name="whatsapp" placeholder="300 000 0000" required />
+              </div></div>
       </div>
       <div class="lead-row">
                 <div class="lead-field">
@@ -730,9 +751,9 @@
     const d = Object.fromEntries(new FormData(this));
     const eventId = 'lead_' + Date.now();
     if (typeof fbq !== 'undefined') fbq('track', 'Lead', { content_name: 'Apartahotel CEO Medellín', eventID: eventId });
-    fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ hotel: 'ceo', nombre: d.nombre, whatsapp: d.whatsapp, checkin: d.llegada, checkout: d.salida, personas: d.personas, habitacion: d.habitacion, eventId, fbp: document.cookie.match(/_fbp=([^;]+)/)?.[1]||'', fbc: document.cookie.match(/_fbc=([^;]+)/)?.[1]||'' }) }).catch(()=>{});
+    fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ hotel: 'ceo', nombre: d.nombre, whatsapp: (d.cc||'+57')+d.whatsapp.replace(/\D/g,''), checkin: d.llegada, checkout: d.salida, personas: d.personas, habitacion: d.habitacion, eventId, fbp: document.cookie.match(/_fbp=([^;]+)/)?.[1]||'', fbc: document.cookie.match(/_fbc=([^;]+)/)?.[1]||'' }) }).catch(()=>{});
     const extras = [d.ac ? 'Con aire acondicionado' : 'Con ventilador', d.mascota ? 'Viaja con mascota' : ''].filter(Boolean).join(', ');
-    const msg = encodeURIComponent('Hola, soy ' + d.nombre + '. Quiero consultar disponibilidad del ' + d.llegada + ' al ' + d.salida + ' para ' + d.personas + '. Habitación: ' + d.habitacion + (extras ? '. Notas: ' + extras : '') + '. Mi WhatsApp: ' + d.whatsapp);
+    const msg = encodeURIComponent('Hola, soy ' + d.nombre + '. Quiero consultar disponibilidad del ' + d.llegada + ' al ' + d.salida + ' para ' + d.personas + '. Habitación: ' + d.habitacion + (extras ? '. Notas: ' + extras : '') + '. Mi WhatsApp: ' + (d.cc||'+57') + d.whatsapp.replace(/\D/g,''));
     window.open('https://wa.me/573022973380?text=' + msg, '_blank');
   });
   document.querySelectorAll('a[href*="wa.me"]').forEach(el => el.addEventListener('click', () => { if (typeof fbq !== 'undefined') fbq('track', 'Contact'); }));
