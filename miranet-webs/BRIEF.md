@@ -54,7 +54,7 @@ IDs individuales:
 ```
 *Las imágenes jpg existentes en `suites-44/assets/` también son válidas para usar.*
 
-**Pixel ID Meta:** *(pendiente — omitir o dejar placeholder `PIXEL_SUITES44`)*
+**Pixel ID Meta:** `989477617220373`
 
 ---
 
@@ -107,7 +107,7 @@ IDs individuales:
 ```
 *También hay imágenes en `pomarosa/assets/` del repo original.*
 
-**Pixel ID Meta:** *(pendiente — placeholder `PIXEL_POMAROSA`)*
+**Pixel ID Meta:** `1459620725920196`
 
 ---
 
@@ -165,7 +165,7 @@ IDs habitaciones:
 1nm03WqxPi5l6Vaa46CuUBhJzl4hhAH_1  → ham-20.png
 ```
 
-**Pixel ID Meta:** *(pendiente — placeholder `PIXEL_CEO`)*
+**Pixel ID Meta:** `1338506288376212`
 
 ---
 
@@ -200,7 +200,7 @@ IDs habitaciones:
 1LN1lJpBV9UEXarThOLC6YPuU7v963ftw  → hab-09.png
 ```
 
-**Pixel ID Meta:** *(pendiente — placeholder `PIXEL_HISTORY`)*
+**Pixel ID Meta:** `2486606141789212`
 
 ---
 
