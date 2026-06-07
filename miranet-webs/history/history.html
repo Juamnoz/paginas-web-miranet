@@ -266,6 +266,11 @@
       .hotel-img-col-badge strong { font-family: var(--font-d); font-size: 18px; font-weight: 400; color: var(--cream); }
       .reservas-card { padding: 40px 48px; }
     }
+  
+  /* ── Validación formulario ─────────────────────────────── */
+  .field-err { display: block; font-size: 11px; color: #ff6b6b; margin-top: 5px; letter-spacing: 0.02em; }
+  .lead-field input.invalid,
+  .lead-field .dp-trigger.invalid { border-color: #ff6b6b !important; }
   </style>
 </head>
 <body>
@@ -654,6 +659,16 @@
   document.getElementById('leadForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const d = Object.fromEntries(new FormData(this));
+    document.querySelectorAll('.field-err').forEach(function(el){el.remove();});
+    document.querySelectorAll('.invalid').forEach(function(el){el.classList.remove('invalid');});
+    var _ok=true;
+    function _showErr(n,m){_ok=false;var f=document.querySelector('[name="'+n+'"]');if(!f)return;f.classList.add('invalid');var s=document.createElement('span');s.className='field-err';s.textContent=m;var w=f.closest('.lead-field');if(w&&!w.querySelector('.field-err'))w.appendChild(s);}
+    if(!d.nombre||d.nombre.trim().length<2)_showErr('nombre','Ingresa tu nombre completo');
+    if(!d.whatsapp||d.whatsapp.replace(/\D/g,'').length<7)_showErr('whatsapp','Número inválido (mín. 7 dígitos)');
+    if(!d.email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email))_showErr('email','Correo electrónico inválido');
+    if(!d.llegada)_showErr('llegada','Selecciona fecha de llegada');
+    if(!d.salida)_showErr('salida','Selecciona fecha de salida');
+    if(!_ok)return;
     const eventId = 'lead_' + Date.now();
     if (typeof fbq !== 'undefined') fbq('track', 'Lead', { content_name: 'Hotel History Center Medellín', eventID: eventId });
     fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ hotel: 'history', nombre: d.nombre, whatsapp: (d.cc||'+57')+d.whatsapp.replace(/\D/g,''), email: d.email || '', checkin: d.llegada, checkout: d.salida, personas: d.personas, habitacion: d.habitacion, eventId, fbp: document.cookie.match(/_fbp=([^;]+)/)?.[1]||'', fbc: document.cookie.match(/_fbc=([^;]+)/)?.[1]||'' }) }).catch(()=>{});
