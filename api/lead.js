@@ -1,6 +1,5 @@
 const crypto = require('crypto');
 const { google } = require('googleapis');
-const nodemailer = require('nodemailer');
 
 // Pixel IDs creados con el token de AIC Studio (CAPI funciona para estos)
 const PIXEL_MAP = {
@@ -71,25 +70,25 @@ async function appendToSheets({ hotel, nombre, whatsapp, email, checkin, checkou
   });
 }
 
+function buildRawEmail(to, subject, html, fromName) {
+  const msg = [
+    `From: "${fromName}" <aicstudioai@gmail.com>`,
+    `To: ${to}`,
+    `Subject: =?UTF-8?B?${Buffer.from(subject).toString('base64')}?=`,
+    'MIME-Version: 1.0',
+    'Content-Type: text/html; charset=UTF-8',
+    '',
+    html,
+  ].join('\r\n');
+  return Buffer.from(msg).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
 async function sendEmails({ hotel, nombre, whatsapp, email, checkin, checkout, personas, habitacion }) {
   if (!process.env.GOOGLE_REFRESH_TOKEN) return;
 
-  const fromAddress = 'aicstudioai@gmail.com';
   const hotelName = HOTEL_NAMES[hotel] || hotel;
-  const oauth2Client = getOAuth2Client();
-  const { token: accessToken } = await oauth2Client.getAccessToken();
-
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      type: 'OAuth2',
-      user: fromAddress,
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-      accessToken,
-    },
-  });
+  const auth = getOAuth2Client();
+  const gmail = google.gmail({ version: 'v1', auth });
 
   const tableRow = (label, value) =>
     `<tr><td style="padding:6px 12px 6px 0;color:#888;font-size:13px;white-space:nowrap">${label}</td><td style="padding:6px 0;font-size:14px;color:#111">${value || '—'}</td></tr>`;
@@ -107,42 +106,42 @@ async function sendEmails({ hotel, nombre, whatsapp, email, checkin, checkout, p
     </table>`;
 
   // Notificación interna a juamnoze@gmail.com
-  await transporter.sendMail({
-    from: `"Miranet Hotels" <${fromAddress}>`,
-    to: 'juamnoze@gmail.com',
-    subject: `[Reserva] ${hotelName} — ${nombre}`,
-    html: `
-      <div style="font-family:sans-serif;max-width:520px;margin:0 auto">
-        <h2 style="margin:0 0 4px;font-size:18px;color:#111">Nueva solicitud de reserva</h2>
-        <p style="margin:0;color:#888;font-size:13px">${new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota', dateStyle: 'full', timeStyle: 'short' })}</p>
-        ${sharedTable}
-        <p style="margin-top:20px;font-size:13px;color:#aaa">Desde el formulario web de ${hotelName}</p>
-      </div>`,
+  const adminHtml = `
+    <div style="font-family:sans-serif;max-width:520px;margin:0 auto">
+      <h2 style="margin:0 0 4px;font-size:18px;color:#111">Nueva solicitud de reserva</h2>
+      <p style="margin:0;color:#888;font-size:13px">${new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota', dateStyle: 'full', timeStyle: 'short' })}</p>
+      ${sharedTable}
+      <p style="margin-top:20px;font-size:13px;color:#aaa">Desde el formulario web de ${hotelName}</p>
+    </div>`;
+
+  await gmail.users.messages.send({
+    userId: 'me',
+    requestBody: { raw: buildRawEmail('juamnoze@gmail.com', `[Reserva] ${hotelName} — ${nombre}`, adminHtml, 'Miranet Hotels') },
   });
 
   // Confirmación al cliente (solo si proporcionó email)
   if (email) {
-    await transporter.sendMail({
-      from: `"${hotelName}" <${fromAddress}>`,
-      to: email,
-      subject: `Recibimos tu solicitud en ${hotelName} ✓`,
-      html: `
-        <div style="font-family:sans-serif;max-width:520px;margin:0 auto">
-          <h2 style="margin:0 0 8px;font-size:20px;color:#111">¡Hola, ${nombre}!</h2>
-          <p style="margin:0 0 16px;font-size:15px;color:#444;line-height:1.6">
-            Recibimos tu solicitud de reserva en <strong>${hotelName}</strong>.
-            Nuestro equipo revisará la disponibilidad y te confirmará por WhatsApp
-            al número <strong>${whatsapp}</strong> en los próximos minutos.
-          </p>
-          <div style="background:#f7f7f7;border-radius:8px;padding:16px 20px">
-            <p style="margin:0 0 8px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#888">Resumen de tu solicitud</p>
-            ${sharedTable}
-          </div>
-          <p style="margin-top:20px;font-size:13px;color:#aaa;line-height:1.5">
-            Si tienes alguna pregunta adicional, escríbenos directamente por WhatsApp.
-            <br>Este correo fue enviado automáticamente — no responder.
-          </p>
-        </div>`,
+    const clientHtml = `
+      <div style="font-family:sans-serif;max-width:520px;margin:0 auto">
+        <h2 style="margin:0 0 8px;font-size:20px;color:#111">¡Hola, ${nombre}!</h2>
+        <p style="margin:0 0 16px;font-size:15px;color:#444;line-height:1.6">
+          Recibimos tu solicitud de reserva en <strong>${hotelName}</strong>.
+          Nuestro equipo revisará la disponibilidad y te confirmará por WhatsApp
+          al número <strong>${whatsapp}</strong> en los próximos minutos.
+        </p>
+        <div style="background:#f7f7f7;border-radius:8px;padding:16px 20px">
+          <p style="margin:0 0 8px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#888">Resumen de tu solicitud</p>
+          ${sharedTable}
+        </div>
+        <p style="margin-top:20px;font-size:13px;color:#aaa;line-height:1.5">
+          Si tienes alguna pregunta adicional, escríbenos directamente por WhatsApp.<br>
+          Este correo fue enviado automáticamente — no responder.
+        </p>
+      </div>`;
+
+    await gmail.users.messages.send({
+      userId: 'me',
+      requestBody: { raw: buildRawEmail(email, `Recibimos tu solicitud en ${hotelName} ✓`, clientHtml, hotelName) },
     });
   }
 }
