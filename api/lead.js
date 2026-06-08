@@ -335,7 +335,7 @@ async function sendEmails({ hotel, nombre, whatsapp, email, checkin, checkout, p
     userId: 'me',
     requestBody: {
       raw: buildRawEmail(
-        'juamnoze@gmail.com',
+        'juamnoze@gmail.com, miranetcommunitymanager@gmail.com',
         `[Reserva] ${cfg.name} — ${nombre}`,
         adminHtml,
         'Miranet Hotels',
