@@ -1189,8 +1189,12 @@
     if(!d.salida)_showErr('salida','Selecciona fecha de salida');
     if(!_ok)return;
     const eventId = 'lead_' + Date.now();
+    var _fbclid = new URLSearchParams(location.search).get('fbclid');
+    if (_fbclid) localStorage.setItem('_fbc_ls', 'fb.1.' + Date.now() + '.' + _fbclid);
+    var _fbc = (_fbclid ? 'fb.1.' + Date.now() + '.' + _fbclid : '') || localStorage.getItem('_fbc_ls') || document.cookie.match(/_fbc=([^;]+)/)?.[1] || '';
+    var _fbp = document.cookie.match(/_fbp=([^;]+)/)?.[1] || '';
     if (typeof fbq !== 'undefined') fbq('track', 'Lead', { content_name: 'Hotel Poma Rosa', eventID: eventId });
-    fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ hotel: 'pomarosa', nombre: d.nombre, whatsapp: (d.cc||'+57')+d.whatsapp.replace(/\D/g,''), email: d.email || '', checkin: d.llegada, checkout: d.salida, personas: d.personas, habitacion: d.habitacion, eventId, fbp: document.cookie.match(/_fbp=([^;]+)/)?.[1]||'', fbc: document.cookie.match(/_fbc=([^;]+)/)?.[1]||'' }) }).catch(()=>{});
+    fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ hotel: 'pomarosa', nombre: d.nombre, whatsapp: (d.cc||'+57')+d.whatsapp.replace(/\D/g,''), email: d.email || '', checkin: d.llegada, checkout: d.salida, personas: d.personas, habitacion: d.habitacion, eventId, fbp: _fbp, fbc: _fbc, source_url: location.href }) }).catch(()=>{});
     let extras = '';
     if (d.desayuno) extras += ' Con desayuno.';
     if (d.mascota) extras += ' Viajo con mascota.';
