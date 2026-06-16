@@ -1,5 +1,12 @@
 {
+  "scripts": {
+    "dev": "serve miranet-webs/pomarosa -l 8088",
+    "dev:all": "serve miranet-webs -l 8088"
+  },
   "dependencies": {
     "googleapis": "^144.0.0"
+  },
+  "devDependencies": {
+    "serve": "^14.2.6"
   }
 }

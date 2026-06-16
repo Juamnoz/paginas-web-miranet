@@ -115,10 +115,16 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      min-height: 100vh;
       min-height: 100svh;
-      padding: 80px 28px 48px;
-      background: var(--bg);
+      padding: 88px 20px 40px;
       position: relative;
+      isolation: isolate;
+      background:
+        linear-gradient(180deg, rgba(10,7,6,0.58) 0%, rgba(10,7,6,0.42) 30%, rgba(10,7,6,0.94) 100%),
+        radial-gradient(135% 95% at 50% 36%, transparent 36%, rgba(10,7,6,0.82) 100%),
+        url("assets/entrada-hotel.jpeg") center 38% / cover no-repeat;
+      background-color: var(--bg);
     }
     .hero-content { position: relative; z-index: 2; text-align: center; padding: 0 24px; display: flex; flex-direction: column; align-items: center; }
     .hero-logo {
@@ -216,6 +222,7 @@
       margin-top: 20px; opacity: 0;
       animation: fadeIn 1s var(--ease-out) 1.2s forwards;
       overflow: visible;
+      pointer-events: none;
     }
     .scroll-hint span { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); font-family: var(--font-b); }
     .scroll-line { width: 1px; height: 32px; background: linear-gradient(to bottom, var(--gold), rgba(196,133,106,0)); transform-origin: top; transition: height 0.08s linear; will-change: height; }
@@ -301,27 +308,119 @@
     .room-cta { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--gold); text-decoration: none; letter-spacing: 0.04em; }
     .room-cta svg { transition: transform 0.2s; }
     .room-cta:hover svg { transform: translateX(4px); }
+    /* Tabla de tarifas por ocupación */
+    .room-rates { display: flex; flex-direction: column; margin-bottom: 16px; border-top: 1px solid var(--border); }
+    .rate-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--border); }
+    .rate-occ { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream); white-space: nowrap; }
+    .rate-vals { font-size: 12px; color: var(--cream-dim); text-align: right; line-height: 1.4; }
+    .rate-vals b { font-family: var(--font-d); font-size: 19px; font-weight: 400; color: var(--gold); }
+    .rate-vals .rate-bf { display: block; font-size: 11px; color: var(--cream-dim); }
+    .rate-caption { font-size: 10px; color: var(--muted); letter-spacing: 0.04em; margin: 10px 0 16px; }
 
     /* RESERVAS — LEAD FORM */
-    .reservas-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .reservas-label { font-family: var(--font-b); font-size: 9px; font-weight: 500; letter-spacing: 0.30em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-    .reservas-label::before, .reservas-label::after { content: ''; flex: 1; max-width: 48px; height: 1px; background: var(--gold-dim); }
-    .reservas-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 32px 24px; max-width: 640px; margin: 0 auto; }
-    .reservas-card-title { font-family: var(--font-d); font-size: 32px; font-weight: 300; color: var(--cream); margin-bottom: 8px; }
-    .reservas-card-desc { font-size: 14px; color: var(--cream-dim); font-weight: 300; margin-bottom: 28px; line-height: 1.6; }
-    .lead-form { display: flex; flex-direction: column; gap: 12px; width: 100%; }
-    .lead-row { display: flex; gap: 12px; }
-    .lead-field { display: flex; flex-direction: column; gap: 6px; flex: 1; }
-    .lead-field label { font-size: 10px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-dim); }
-    .lead-field input, .lead-field select { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 12px 14px; color: var(--cream); font-family: var(--font-b); font-size: 14px; outline: none; transition: border-color 0.2s; width: 100%; }
-    .lead-field input:focus, .lead-field select:focus { border-color: var(--gold); }
+    /* ─── MOTOR DE RESERVAS · HERO BAR ─────────── */
+    .hero-booking { position: relative; z-index: 5; width: 100%; max-width: 900px; margin: clamp(28px,5vh,52px) auto 0; opacity: 0; transform: translateY(14px); animation: fadeUp .8s var(--ease-out) 1.3s forwards; }
+    .hb-bar { display: flex; flex-direction: column; gap: 4px; background: rgba(22,17,12,0.74); backdrop-filter: blur(22px) saturate(1.3); -webkit-backdrop-filter: blur(22px) saturate(1.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 22px; padding: 10px; box-shadow: 0 28px 64px rgba(0,0,0,0.5); }
+    .hb-field { flex: 1; display: flex; flex-direction: column; gap: 3px; padding: 12px 16px; border-radius: 14px; position: relative; cursor: pointer; transition: background .2s; text-align: left; min-width: 0; touch-action: manipulation; }
+    .hb-field:hover { background: rgba(255,255,255,0.05); }
+    .hb-label { font-family: var(--font-b); font-size: 9px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-dim); }
+    .hb-input { background: transparent; border: none; outline: none; color: var(--cream); font-family: var(--font-b); font-size: 14px; font-weight: 400; padding: 0; width: 100%; cursor: pointer; }
+    .hb-input::placeholder { color: var(--muted); }
+    .hb-select { -webkit-appearance: none; appearance: none; padding-right: 18px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a8967e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right center; }
+    .hb-cal { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; display: flex; }
+    .hb-divider { display: none; width: 1px; background: rgba(255,255,255,0.1); margin: 8px 0; flex-shrink: 0; }
+    .hb-cta { position: relative; z-index: 2; flex-shrink: 0; display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--gold); color: var(--bg); border: none; border-radius: 14px; padding: 16px 26px; margin-top: 6px; font-family: var(--font-b); font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; transition: transform .2s, box-shadow .2s, opacity .2s; box-shadow: 0 6px 20px rgba(196,133,106,0.3); touch-action: manipulation; -webkit-tap-highlight-color: transparent; -webkit-appearance: none; appearance: none; }
+    .hb-cta:hover { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(196,133,106,0.42); }
+    .hb-cta:active { transform: translateY(0); opacity: .9; }
+    .hero-trust { position: relative; z-index: 2; width: 100%; max-width: 900px; margin: 18px auto 0; display: grid; grid-template-columns: repeat(2,1fr); gap: 14px 20px; opacity: 0; animation: fadeUp .8s var(--ease-out) 1.5s forwards; }
+    .trust-item { display: flex; align-items: center; gap: 10px; }
+    .trust-ico { width: 32px; height: 32px; border-radius: 9px; background: rgba(196,133,106,0.12); border: 1px solid rgba(196,133,106,0.22); display: flex; align-items: center; justify-content: center; color: var(--gold); flex-shrink: 0; }
+    .trust-tx p { margin: 0; line-height: 1.25; }
+    .trust-tl { font-family: var(--font-b); font-size: 11px; font-weight: 600; color: var(--cream); letter-spacing: 0.02em; }
+    .trust-ds { font-size: 10px; color: var(--cream-dim); }
+    @media (min-width: 760px) {
+      .hb-bar { flex-direction: row; align-items: stretch; gap: 6px; padding: 10px; }
+      .hb-divider { display: block; }
+      .hb-cta { margin-top: 0; padding: 0 28px; }
+      .hero-trust { grid-template-columns: repeat(4,1fr); }
+    }
+    /* ─── MODAL DE RESERVAS (selector de habitación) ─ */
+    .bkmodal { position: fixed; inset: 0; z-index: 300; display: none; align-items: flex-end; justify-content: center; }
+    .bkmodal.open { display: flex; }
+    .bkmodal-bg { position: absolute; inset: 0; background: rgba(8,6,5,0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: 0; transition: opacity .3s; }
+    .bkmodal.open .bkmodal-bg { opacity: 1; }
+    .bkmodal-sheet { position: relative; width: 100%; max-width: 720px; max-height: 92vh; overflow-y: auto; -webkit-overflow-scrolling: touch; background: var(--surface-2); border: 1px solid var(--border); border-radius: 28px 28px 0 0; padding: 26px 22px 28px; padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px)); transform: translateY(40px); opacity: 0; transition: transform .38s var(--ease-out), opacity .38s; }
+    .bkmodal.open .bkmodal-sheet { transform: translateY(0); opacity: 1; }
+    @media (min-width: 760px) { .bkmodal { align-items: center; } .bkmodal-sheet { border-radius: 28px; max-height: 88vh; } }
+    .bkmodal-handle { width: 42px; height: 4px; border-radius: 100px; background: var(--border-h); margin: 0 auto 20px; }
+    @media (min-width: 760px) { .bkmodal-handle { display: none; } }
+    .bkmodal-close { position: absolute; top: 18px; right: 18px; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface); color: var(--cream-dim); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: border-color .2s, color .2s; z-index: 3; }
+    .bkmodal-close:hover { color: var(--cream); border-color: var(--border-h); }
+    .bk-head { margin-bottom: 18px; padding-right: 42px; }
+    .bk-head h3 { font-family: var(--font-d); font-size: 25px; font-weight: 300; color: var(--cream); margin: 0 0 4px; }
+    .bk-head p { font-size: 12px; color: var(--cream-dim); margin: 0; }
+    .bk-rooms { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .bk-room { border-radius: 18px; overflow: hidden; background: var(--surface); border: 1px solid var(--border); cursor: pointer; transition: border-color .2s, transform .2s; text-align: left; padding: 0; font-family: inherit; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+    .bk-room:hover { border-color: var(--gold-dim); transform: translateY(-2px); }
+    .bk-room-img { position: relative; height: 132px; }
+    .bk-room-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .bk-room-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.72), transparent 60%); }
+    .bk-room-cap { position: absolute; left: 12px; bottom: 10px; z-index: 2; }
+    .bk-room-nm { font-family: var(--font-d); font-size: 16px; color: #fff; line-height: 1.1; margin: 0; }
+    .bk-room-mx { font-size: 10px; color: rgba(255,255,255,0.72); margin: 3px 0 0; }
+    .bk-room-body { padding: 12px 14px; }
+    .bk-room-pr { display: flex; align-items: baseline; gap: 5px; }
+    .bk-room-pr b { font-family: var(--font-d); font-size: 18px; color: var(--gold); font-weight: 400; }
+    .bk-room-pr span { font-size: 10px; color: var(--cream-dim); }
+    .bk-room-am { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 9px; }
+    .bk-room-am span { font-size: 9px; color: var(--cream-dim); background: rgba(196,133,106,0.08); border: 1px solid var(--border); padding: 3px 8px; border-radius: 100px; }
+    .bk-back { display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: var(--cream-dim); font-family: var(--font-b); font-size: 12px; cursor: pointer; margin-bottom: 14px; padding: 0; }
+    .bk-back:hover { color: var(--cream); }
+    .bk-summary { display: flex; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 12px; margin-bottom: 18px; }
+    .bk-summary img { width: 66px; height: 66px; border-radius: 12px; object-fit: cover; flex-shrink: 0; }
+    .bk-summary-tx { min-width: 0; }
+    .bk-summary-tx h4 { font-family: var(--font-d); font-size: 17px; color: var(--cream); margin: 0 0 3px; font-weight: 400; }
+    .bk-summary-tx p { font-size: 11px; color: var(--cream-dim); margin: 0; }
+    .bk-guest-form { display: flex; flex-direction: column; gap: 14px; }
+    /* Safety: si las animaciones no corren, todo visible (reduce-motion / extensiones / motores viejos) */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .001ms !important; animation-delay: 0ms !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+      .hero-logo, .hero-eyebrow, .hero-title, .hero-sub, .hero-actions, .hero-booking, .hero-trust { opacity: 1 !important; transform: none !important; }
+    }
+    /* Fallback de blur: si no hay backdrop-filter, fondo sólido legible */
+    @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+      .hb-bar { background: rgba(20,15,11,0.95); }
+      .reservas-card { background: var(--surface-2); }
+      .bkmodal-bg { background: rgba(8,6,5,0.92); }
+    }
+    .reservas-section { position: relative; background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 96px 24px; overflow: hidden; }
+    .reservas-section::before { content: ''; position: absolute; top: -18%; left: 50%; transform: translateX(-50%); width: 700px; height: 700px; max-width: 130vw; background: radial-gradient(circle, rgba(196,133,106,0.12), transparent 62%); pointer-events: none; }
+    .reservas-label { position: relative; font-family: var(--font-b); font-size: 9px; font-weight: 500; letter-spacing: 0.30em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 22px; display: flex; align-items: center; justify-content: center; gap: 12px; }
+    .reservas-label::before, .reservas-label::after { content: ''; flex: 1; max-width: 48px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-dim)); }
+    .reservas-card { position: relative; background: rgba(28,23,16,0.55); backdrop-filter: blur(28px) saturate(1.4); -webkit-backdrop-filter: blur(28px) saturate(1.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 30px; padding: 44px 38px; max-width: 660px; margin: 0 auto; box-shadow: 0 40px 90px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06); }
+    .reservas-card-title { font-family: var(--font-d); font-size: 34px; font-weight: 300; color: var(--cream); margin-bottom: 10px; letter-spacing: -0.01em; }
+    .reservas-card-desc { font-size: 14px; color: var(--cream-dim); font-weight: 300; margin-bottom: 32px; line-height: 1.65; }
+    .lead-form { display: flex; flex-direction: column; gap: 16px; width: 100%; }
+    .lead-row { display: flex; gap: 14px; }
+    .lead-field { display: flex; flex-direction: column; gap: 9px; flex: 1; }
+    .lead-field label { font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream-dim); opacity: 0.72; }
+    .lead-field input, .lead-field select { -webkit-appearance: none; appearance: none; background: rgba(255,255,255,0.045); border: 1px solid rgba(255,255,255,0.09); border-radius: 14px; padding: 15px 16px; color: var(--cream); font-family: var(--font-b); font-size: 15px; outline: none; transition: border-color .25s, background .25s, box-shadow .25s; width: 100%; }
+    .lead-field input:hover, .lead-field select:hover { border-color: rgba(255,255,255,0.16); }
+    .lead-field input:focus, .lead-field select:focus { border-color: rgba(196,133,106,0.55); background: rgba(255,255,255,0.06); box-shadow: 0 0 0 4px rgba(196,133,106,0.13); }
     .lead-field input::placeholder { color: var(--muted); }
-    .lead-field select option { background: var(--surface-2); }
-    .lead-submit { display: flex; align-items: center; justify-content: center; gap: 10px; background: #25D366; color: #fff; border: none; border-radius: 100px; padding: 16px 28px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.2s, transform 0.2s; box-shadow: 0 4px 20px rgba(37,211,102,0.3); margin-top: 4px; font-family: var(--font-b); }
-    .lead-submit:hover { opacity: 0.9; transform: scale(1.02); }
-    .phone-wrap { display: flex; gap: 6px; }
-    .phone-cc { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 12px 6px; color: var(--cream); font-family: var(--font-b); font-size: 13px; outline: none; transition: border-color 0.2s; flex-shrink: 0 !important; cursor: pointer; width: 90px !important; }
-    .phone-cc:focus { border-color: var(--gold); }
+    .lead-field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23a8967e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 15px center; padding-right: 40px; cursor: pointer; }
+    .lead-field select option { background: #1c1710; }
+    .lead-checks { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; padding: 2px 0; }
+    .lead-check { display: inline-flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--cream-dim); cursor: pointer; user-select: none; }
+    .lead-check input { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; margin: 0; padding: 0; border: 1px solid rgba(255,255,255,0.2); border-radius: 7px; background: rgba(255,255,255,0.04); cursor: pointer; position: relative; transition: background .2s, border-color .2s; flex-shrink: 0; }
+    .lead-check input:checked { background: var(--gold); border-color: var(--gold); }
+    .lead-check input:checked::after { content: ''; position: absolute; left: 7px; top: 3px; width: 5px; height: 10px; border: solid #1a1408; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+    .lead-submit { display: flex; align-items: center; justify-content: center; gap: 11px; background: linear-gradient(180deg, #2ee06f, #21c45c); color: #fff; border: none; border-radius: 100px; padding: 18px 28px; font-size: 15.5px; font-weight: 600; cursor: pointer; transition: transform .25s var(--ease-out), box-shadow .25s; box-shadow: 0 10px 34px rgba(37,211,102,0.32), inset 0 1px 0 rgba(255,255,255,0.25); margin-top: 10px; font-family: var(--font-b); letter-spacing: 0.01em; }
+    .lead-submit:hover { transform: translateY(-2px); box-shadow: 0 16px 46px rgba(37,211,102,0.42), inset 0 1px 0 rgba(255,255,255,0.25); }
+    .lead-submit:active { transform: translateY(0); }
+    .phone-wrap { display: flex; gap: 8px; }
+    .phone-cc { -webkit-appearance: none; appearance: none; background: rgba(255,255,255,0.045); border: 1px solid rgba(255,255,255,0.09); border-radius: 14px; padding: 14px 8px; color: var(--cream); font-family: var(--font-b); font-size: 14px; outline: none; transition: border-color .25s, box-shadow .25s; flex-shrink: 0 !important; cursor: pointer; width: 96px !important; }
+    .phone-cc:focus { border-color: rgba(196,133,106,0.55); box-shadow: 0 0 0 4px rgba(196,133,106,0.13); }
     .phone-cc option { background: #1a1408; }
     .phone-wrap input { flex: 1; min-width: 0; }
     /* ─── DATEPICKER ─────────────────────────── */
@@ -466,7 +565,7 @@
       nav.scrolled { padding: 14px 32px; }
       .nav-logo { height: 42px; }
       .nav-cta { font-size: 13px; padding: 10px 22px; }
-      .hero-text-zone { padding: 0 48px 56px; min-height: 100svh; }
+      .hero-text-zone { padding: 88px 48px 48px; min-height: 100vh; min-height: 100svh; }
       .rooms-grid { display: grid; grid-template-columns: 1fr 1fr; }
       .gallery-grid { grid-template-columns: 1fr 1fr 1fr; }
       .gallery-item:first-child { grid-column: 1 / 2; grid-row: 1 / 3; aspect-ratio: unset; }
@@ -509,11 +608,56 @@
       <p class="hero-title" style="display:none;">Poma <em>Rosa</em></p>
       <p class="hero-eyebrow">Laureles · Medellín · Colombia</p>
       <p class="hero-sub">Confort, calidez y experiencias auténticas en el corazón de Laureles</p>
-      <div class="hero-actions">
-        <a href="#reservas" class="btn-primary">Consultar disponibilidad</a>
-        <a href="#el-hotel" class="btn-ghost">Conocer el hotel</a>
+    </div>
+
+    <!-- MOTOR DE RESERVAS · barra hero -->
+    <div class="hero-booking">
+      <div class="hb-bar">
+        <div class="hb-field dp" id="dp-hero-in">
+          <span class="hb-label">Check in</span>
+          <input class="dp-trigger hb-input" id="heroIn" placeholder="Llegada" readonly />
+          <span class="hb-cal"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2.5"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+          <div class="dp-panel"></div>
+        </div>
+        <div class="hb-divider"></div>
+        <div class="hb-field dp" id="dp-hero-out">
+          <span class="hb-label">Check out</span>
+          <input class="dp-trigger hb-input" id="heroOut" placeholder="Salida" readonly />
+          <span class="hb-cal"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2.5"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+          <div class="dp-panel"></div>
+        </div>
+        <div class="hb-divider"></div>
+        <div class="hb-field" onclick="document.getElementById('heroGuests').focus()">
+          <span class="hb-label">Huéspedes</span>
+          <select class="hb-input hb-select" id="heroGuests">
+            <option>1 persona</option>
+            <option selected>2 personas</option>
+            <option>3 personas</option>
+            <option>4 personas</option>
+          </select>
+        </div>
+        <button class="hb-cta" id="heroReservar" type="button">Reservar directo</button>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item">
+          <span class="trust-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 11v8M2 11h20M2 11l1-5a2 2 0 0 1 2-1.5h14a2 2 0 0 1 2 1.5l1 5M22 11v8M6 11V8.5a1.5 1.5 0 0 1 1.5-1.5h2A1.5 1.5 0 0 1 11 8.5V11M13 11V8.5A1.5 1.5 0 0 1 14.5 7h2A1.5 1.5 0 0 1 18 8.5V11"/></svg></span>
+          <div class="trust-tx"><p class="trust-tl">Mejor tarifa</p><p class="trust-ds">Garantizada</p></div>
+        </div>
+        <div class="trust-item">
+          <span class="trust-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2.5"/><path d="M16 2v4M8 2v4M3 10h18M9 16l2 2 4-4"/></svg></span>
+          <div class="trust-tx"><p class="trust-tl">Cancelación flexible</p><p class="trust-ds">Sin cargos ocultos</p></div>
+        </div>
+        <div class="trust-item">
+          <span class="trust-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 3v6c0 5-3.5 8-8 11-4.5-3-8-6-8-11V5l8-3zM9 12l2 2 4-4"/></svg></span>
+          <div class="trust-tx"><p class="trust-tl">Pago seguro</p><p class="trust-ds">100% protegido</p></div>
+        </div>
+        <div class="trust-item">
+          <span class="trust-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13v-1a8 8 0 0 1 16 0v1M4 13a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1v-5H4zm16 0h-1v5h1a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2zM18 18a4 4 0 0 1-4 3h-2"/></svg></span>
+          <div class="trust-tx"><p class="trust-tl">Atención 24/7</p><p class="trust-ds">Directa con el hotel</p></div>
+        </div>
       </div>
     </div>
+
     <div class="scroll-hint">
       <span>Descubrir</span>
       <div class="scroll-line"></div>
@@ -537,11 +681,17 @@
       <div class="slider-slide"><img src="assets/hab-05.png" alt="Habitación" loading="lazy" /></div>
       <div class="slider-slide"><img src="assets/hab-06.png" alt="Habitación" loading="lazy" /></div>
       <div class="slider-slide"><img src="assets/hab-07.png" alt="Habitación" loading="lazy" /></div>
-      <div class="slider-slide"><img src="assets/hab-08.png" alt="Habitación" loading="lazy" /></div>
+      <div class="slider-slide"><img src="assets/hab-19.png" alt="Habitación" loading="lazy" /></div>
     </div>
     <div class="slider-dots" id="amenDots"></div>
   </div>
 </section>
+
+<!-- MODAL MOTOR DE RESERVAS -->
+<div class="bkmodal" id="bkModal" aria-hidden="true">
+  <div class="bkmodal-bg"></div>
+  <div class="bkmodal-sheet" id="bkSheet"></div>
+</div>
 
 <!-- EL HOTEL -->
 <section class="hotel-section" id="el-hotel">
@@ -617,87 +767,68 @@
     <div class="room-card reveal reveal-delay-1">
       <div class="room-img-slider" id="roomSlider1">
         <div class="room-slides">
-          <img src="assets/hab-10.png" alt="Habitación Doble" class="room-slide-img" loading="eager" />
-          <img src="assets/hab-11.png" alt="Habitación Doble" class="room-slide-img" loading="lazy" />
+          <img src="assets/hab-01.png" alt="Habitación Doble — cama matrimonial" class="room-slide-img" loading="eager" />
+          <img src="assets/hab-03.png" alt="Habitación Doble — cama matrimonial con ventana" class="room-slide-img" loading="lazy" />
+          <img src="assets/hab-09.png" alt="Habitación Doble — con balcón" class="room-slide-img" loading="lazy" />
+          <img src="assets/hab-19.png" alt="Habitación Doble — amplia con minibar" class="room-slide-img" loading="lazy" />
         </div>
         <div class="room-slide-dots"></div>
       </div>
       <div class="room-body">
-        <p class="room-tag">1 persona</p>
+        <p class="room-tag">1 a 2 personas</p>
         <h3 class="room-name">Habitación Doble</h3>
-        <p class="room-desc">Cama matrimonial, baño privado y todo lo que necesitas para descansar bien. Ideal para viajeros solos.</p>
-        <div class="room-amenities">
-          <span class="amenity-pill">Baño privado</span>
-          <span class="amenity-pill">TV</span>
-          <span class="amenity-pill">Wi-Fi</span>
-        </div>
-        <p class="room-price">Desde $120.000 · Con desayuno $140.000</p>
-        <a href="#reservas" class="room-cta">Reservar <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-      </div>
-    </div>
-    <div class="room-card reveal reveal-delay-2">
-      <div class="room-img-slider" id="roomSlider2">
-        <div class="room-slides">
-          <img src="assets/hab-12.png" alt="Habitación Doble Pareja" class="room-slide-img" loading="lazy" />
-          <img src="assets/hab-13.png" alt="Habitación Doble Pareja" class="room-slide-img" loading="lazy" />
-        </div>
-        <div class="room-slide-dots"></div>
-      </div>
-      <div class="room-body">
-        <p class="room-tag">2 personas</p>
-        <h3 class="room-name">Habitación Doble</h3>
-        <p class="room-desc">Cama matrimonial amplia para dos. Perfecta para parejas que buscan comodidad y buen precio en Laureles.</p>
+        <p class="room-desc">Cama matrimonial, baño privado y todo lo que necesitas para descansar. Algunas con balcón y aire acondicionado.</p>
         <div class="room-amenities">
           <span class="amenity-pill">Baño privado</span>
           <span class="amenity-pill">TV</span>
           <span class="amenity-pill">Wi-Fi</span>
           <span class="amenity-pill">AC / Ventilador</span>
         </div>
-        <p class="room-price">Desde $150.000 · Con desayuno $160.000</p>
+        <div class="room-rates">
+          <div class="rate-row">
+            <span class="rate-occ">1 persona</span>
+            <span class="rate-vals"><b>$120.000</b><span class="rate-bf">con desayuno $140.000</span></span>
+          </div>
+          <div class="rate-row">
+            <span class="rate-occ">2 personas</span>
+            <span class="rate-vals"><b>$150.000</b><span class="rate-bf">con desayuno $160.000</span></span>
+          </div>
+        </div>
+        <p class="rate-caption">Precios por noche. Pet friendly con costo adicional 🐾</p>
         <a href="#reservas" class="room-cta">Reservar <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
       </div>
     </div>
-    <div class="room-card reveal reveal-delay-3">
-      <div class="room-img-slider" id="roomSlider3">
+    <div class="room-card reveal reveal-delay-2">
+      <div class="room-img-slider" id="roomSlider2">
         <div class="room-slides">
-          <img src="assets/hab-14.png" alt="Triple Familiar" class="room-slide-img" loading="lazy" />
-          <img src="assets/hab-15.png" alt="Triple Familiar" class="room-slide-img" loading="lazy" />
+          <img src="assets/hab-10.png" alt="Habitación Triple / Familiar — dos camas" class="room-slide-img" loading="lazy" />
+          <img src="assets/hab-02.png" alt="Habitación Triple / Familiar — dos camas con aire acondicionado" class="room-slide-img" loading="lazy" />
+          <img src="assets/hab-16.png" alt="Habitación Triple / Familiar — dos camas con ventilador" class="room-slide-img" loading="lazy" />
+          <img src="assets/hab-18.png" alt="Habitación Triple / Familiar — dos camas amplias" class="room-slide-img" loading="lazy" />
         </div>
         <div class="room-slide-dots"></div>
       </div>
       <div class="room-body">
-        <p class="room-tag">3 personas</p>
+        <p class="room-tag">3 a 4 personas</p>
         <h3 class="room-name">Triple / Familiar</h3>
-        <p class="room-desc">Espacio cómodo para tres. Algunas habitaciones con patio o balcón — perfectas para estancias más largas.</p>
+        <p class="room-desc">Espacio amplio para grupos o familias. Dos camas, baño privado y, en algunas, patio o balcón para estancias más largas.</p>
         <div class="room-amenities">
           <span class="amenity-pill">Baño privado</span>
           <span class="amenity-pill">TV</span>
           <span class="amenity-pill">Wi-Fi</span>
           <span class="amenity-pill">Patio / Balcón</span>
         </div>
-        <p class="room-price">Desde $200.000 · Con desayuno $220.000</p>
-        <a href="#reservas" class="room-cta">Reservar <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-      </div>
-    </div>
-    <div class="room-card reveal reveal-delay-1">
-      <div class="room-img-slider" id="roomSlider4">
-        <div class="room-slides">
-          <img src="assets/hab-16.png" alt="Triple Familiar 4p" class="room-slide-img" loading="lazy" />
-          <img src="assets/hab-17.png" alt="Triple Familiar 4p" class="room-slide-img" loading="lazy" />
+        <div class="room-rates">
+          <div class="rate-row">
+            <span class="rate-occ">3 personas</span>
+            <span class="rate-vals"><b>$200.000</b><span class="rate-bf">con desayuno $220.000</span></span>
+          </div>
+          <div class="rate-row">
+            <span class="rate-occ">4 personas</span>
+            <span class="rate-vals"><b>$270.000</b><span class="rate-bf">con desayuno $290.000</span></span>
+          </div>
         </div>
-        <div class="room-slide-dots"></div>
-      </div>
-      <div class="room-body">
-        <p class="room-tag">4 personas</p>
-        <h3 class="room-name">Triple / Familiar</h3>
-        <p class="room-desc">Ideal para familias o grupos. Amplio, cómodo y con todo lo necesario para una estadía memorable.</p>
-        <div class="room-amenities">
-          <span class="amenity-pill">Baño privado</span>
-          <span class="amenity-pill">TV</span>
-          <span class="amenity-pill">Wi-Fi</span>
-          <span class="amenity-pill">Pet Friendly 🐾</span>
-        </div>
-        <p class="room-price">Desde $270.000 · Con desayuno $290.000</p>
+        <p class="rate-caption">Precios por noche. Pet friendly con costo adicional 🐾</p>
         <a href="#reservas" class="room-cta">Reservar <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
       </div>
     </div>
@@ -862,13 +993,13 @@
           </select>
         </div>
       </div>
-      <div class="lead-row" style="align-items:center; gap:16px; flex-wrap:wrap;">
-        <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--cream-dim); cursor:pointer;">
-          <input type="checkbox" name="desayuno" style="width:auto; padding:0;" />
+      <div class="lead-checks">
+        <label class="lead-check">
+          <input type="checkbox" name="desayuno" />
           Incluir desayuno
         </label>
-        <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--cream-dim); cursor:pointer;">
-          <input type="checkbox" name="mascota" style="width:auto; padding:0;" />
+        <label class="lead-check">
+          <input type="checkbox" name="mascota" />
           Viajo con mascota 🐾
         </label>
       </div>
@@ -1142,9 +1273,12 @@
         document.querySelectorAll('.dp-panel.dp-open').forEach(function(p){if(p!==s.panel)p.classList.remove('dp-open');});
         s.view=s.sel?new Date(s.sel):new Date();draw(s);
         var r=s.input.getBoundingClientRect();
+        var vw=window.innerWidth||document.documentElement.clientWidth;
+        var pw=Math.max(248,r.width); if(pw>vw-16)pw=vw-16;
+        var left=r.left; if(left+pw>vw-8)left=vw-pw-8; if(left<8)left=8;
         s.panel.style.top=(r.bottom+6)+'px';
-        s.panel.style.left=r.left+'px';
-        s.panel.style.width=r.width+'px';
+        s.panel.style.left=left+'px';
+        s.panel.style.width=pw+'px';
       }
       s.panel.classList.toggle('dp-open',v);
     }
@@ -1173,6 +1307,14 @@
         setTimeout(function(){show(sOut,true);},150);
       };
     }
+    var hIn=make('dp-hero-in'),hOut=make('dp-hero-out');
+    if(hIn&&hOut){
+      hIn.onChange=function(d){
+        var nx=new Date(d);nx.setDate(nx.getDate()+1);hOut.min=nx;
+        if(hOut.sel&&hOut.sel<=d){hOut.sel=null;hOut.input.value='';}
+        setTimeout(function(){show(hOut,true);},150);
+      };
+    }
   })();
 
   document.getElementById('leadForm').addEventListener('submit', function(e) {
@@ -1190,16 +1332,19 @@
     if(!_ok)return;
     const eventId = 'lead_' + Date.now();
     var _fbclid = new URLSearchParams(location.search).get('fbclid');
-    if (_fbclid) localStorage.setItem('_fbc_ls', 'fb.1.' + Date.now() + '.' + _fbclid);
-    var _fbc = (_fbclid ? 'fb.1.' + Date.now() + '.' + _fbclid : '') || localStorage.getItem('_fbc_ls') || document.cookie.match(/_fbc=([^;]+)/)?.[1] || '';
-    var _fbp = document.cookie.match(/_fbp=([^;]+)/)?.[1] || '';
+    if (_fbclid) { try { localStorage.setItem('_fbc_ls', 'fb.1.' + Date.now() + '.' + _fbclid); } catch(e){} }
+    var _lsFbc = ''; try { _lsFbc = localStorage.getItem('_fbc_ls') || ''; } catch(e){}
+    var _fbc = (_fbclid ? 'fb.1.' + Date.now() + '.' + _fbclid : '') || _lsFbc || (document.cookie.match(/_fbc=([^;]+)/) || [])[1] || '';
+    var _fbp = (document.cookie.match(/_fbp=([^;]+)/) || [])[1] || '';
     if (typeof fbq !== 'undefined') fbq('track', 'Lead', { content_name: 'Hotel Poma Rosa', eventID: eventId });
     fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ hotel: 'pomarosa', nombre: d.nombre, whatsapp: (d.cc||'+57')+d.whatsapp.replace(/\D/g,''), email: d.email || '', checkin: d.llegada, checkout: d.salida, personas: d.personas, habitacion: d.habitacion, eventId, fbp: _fbp, fbc: _fbc, source_url: location.href }) }).catch(()=>{});
     let extras = '';
     if (d.desayuno) extras += ' Con desayuno.';
     if (d.mascota) extras += ' Viajo con mascota.';
     const msg = encodeURIComponent('Hola, soy ' + d.nombre + '. Quiero consultar disponibilidad del ' + d.llegada + ' al ' + d.salida + ' para ' + d.personas + '. Tipo: ' + d.habitacion + '.' + extras + ' Mi WhatsApp: ' + d.whatsapp);
-    window.open('https://wa.me/573146544069?text=' + msg, '_blank');
+    var _waUrl = 'https://wa.me/573146544069?text=' + msg;
+    var _wa = window.open(_waUrl, '_blank');
+    if (!_wa) location.href = _waUrl;
   });
 
   // TRACKING
@@ -1214,6 +1359,98 @@
   function openLightbox(src) { document.getElementById('lightboxImg').src = src; document.getElementById('lightbox').classList.add('open'); document.body.style.overflow = 'hidden'; }
   function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; }
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  // ── MOTOR DE RESERVAS · MODAL (rooms → datos → WhatsApp + CAPI) ──
+  (function(){
+    var XSVG='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>';
+    var BACKSVG='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>';
+    var WASVG='<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12.05 21.785a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.825 9.825 0 016.988 2.898 9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884z"/></svg>';
+    var CC='<option value="+57">🇨🇴 +57</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option><option value="+34">🇪🇸 +34</option><option value="+58">🇻🇪 +58</option><option value="+54">🇦🇷 +54</option><option value="+55">🇧🇷 +55</option><option value="+56">🇨🇱 +56</option><option value="+51">🇵🇪 +51</option><option value="+593">🇪🇨 +593</option><option value="+507">🇵🇦 +507</option><option value="+44">🇬🇧 +44</option>';
+    var ROOMS=[
+      {id:'doble',name:'Habitación Doble',maxLabel:'Hasta 2 personas',price:'$120.000',img:'assets/hab-01.png',am:['Baño privado','TV','AC / Ventilador']},
+      {id:'familiar',name:'Triple / Familiar',maxLabel:'Hasta 4 personas',price:'$200.000',img:'assets/hab-10.png',am:['Baño privado','TV','Patio / Balcón']}
+    ];
+    var modal=document.getElementById('bkModal'), sheet=document.getElementById('bkSheet'), btn=document.getElementById('heroReservar');
+    if(!modal||!sheet){ return; }
+    var selected=null, openedAt=0;
+    function ctx(){ return {
+      ci:(document.getElementById('heroIn')||{}).value||'',
+      co:(document.getElementById('heroOut')||{}).value||'',
+      g:(document.getElementById('heroGuests')||{}).value||'2 personas'
+    }; }
+    function summary(){ var c=ctx(); var p=[]; if(c.ci&&c.co)p.push(c.ci+' → '+c.co); p.push(c.g); return p.join(' · '); }
+    function openModal(){ if(modal.classList.contains('open'))return; openedAt=Date.now(); renderRooms(); modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; if(typeof fbq!=='undefined')fbq('track','InitiateCheckout'); }
+    function closeModal(){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+    function renderRooms(){
+      sheet.innerHTML =
+        '<div class="bkmodal-handle"></div><button class="bkmodal-close" type="button" id="bkClose">'+XSVG+'</button>'+
+        '<div class="bk-head"><h3>Elige tu habitación</h3><p>'+(summary()||'Selecciona fechas y huéspedes')+'</p></div>'+
+        '<div class="bk-rooms">'+ROOMS.map(function(r,i){
+          return '<button class="bk-room" type="button" data-i="'+i+'">'+
+            '<div class="bk-room-img"><img src="'+r.img+'" alt="'+r.name+'" loading="lazy" onerror="this.onerror=null;this.src=\'assets/hab-04.png\'" /><div class="bk-room-cap"><p class="bk-room-nm">'+r.name+'</p><p class="bk-room-mx">'+r.maxLabel+'</p></div></div>'+
+            '<div class="bk-room-body"><div class="bk-room-pr"><b>'+r.price+'</b><span>/noche</span></div>'+
+            '<div class="bk-room-am">'+r.am.map(function(a){return '<span>'+a+'</span>';}).join('')+'</div></div></button>';
+        }).join('')+'</div>';
+      bind();
+    }
+    function renderGuest(){
+      var r=selected;
+      sheet.innerHTML =
+        '<div class="bkmodal-handle"></div><button class="bkmodal-close" type="button" id="bkClose">'+XSVG+'</button>'+
+        '<button class="bk-back" type="button" id="bkBack">'+BACKSVG+' Volver a habitaciones</button>'+
+        '<div class="bk-summary"><img src="'+r.img+'" alt="" onerror="this.onerror=null;this.src=\'assets/hab-04.png\'" /><div class="bk-summary-tx"><h4>'+r.name+'</h4><p>'+(summary()||r.maxLabel)+'</p></div></div>'+
+        '<div class="bk-guest-form">'+
+          '<div class="lead-field"><label>Nombre completo</label><input id="bkName" type="text" placeholder="Tu nombre" /></div>'+
+          '<div class="lead-field"><label>Tu WhatsApp</label><div class="phone-wrap"><select id="bkCc" class="phone-cc">'+CC+'</select><input id="bkPhone" type="tel" placeholder="300 000 0000" /></div></div>'+
+          '<div class="lead-field"><label>Tu correo</label><input id="bkEmail" type="email" placeholder="correo@ejemplo.com" /></div>'+
+          '<div class="lead-checks"><label class="lead-check"><input type="checkbox" id="bkBf" /> Incluir desayuno</label><label class="lead-check"><input type="checkbox" id="bkPet" /> Viajo con mascota 🐾</label></div>'+
+          '<button class="lead-submit" type="button" id="bkConfirm">'+WASVG+' Confirmar por WhatsApp</button>'+
+          '<p id="bkErr" style="display:none;color:#ff8a8a;font-size:12px;text-align:center;margin:0;"></p>'+
+        '</div>';
+      bind();
+    }
+    function bind(){
+      var c=document.getElementById('bkClose'); if(c)c.onclick=closeModal;
+      var b=document.getElementById('bkBack'); if(b)b.onclick=renderRooms;
+      sheet.querySelectorAll('.bk-room').forEach(function(el){ el.onclick=function(){ selected=ROOMS[parseInt(el.dataset.i)]; renderGuest(); }; });
+      var cf=document.getElementById('bkConfirm'); if(cf)cf.onclick=confirmBooking;
+    }
+    function confirmBooking(){
+      if(!selected)return renderRooms();
+      var nameEl=document.getElementById('bkName'), phoneEl=document.getElementById('bkPhone'), emailEl=document.getElementById('bkEmail');
+      var ccEl=document.getElementById('bkCc'), bfEl=document.getElementById('bkBf'), petEl=document.getElementById('bkPet');
+      var err=document.getElementById('bkErr');
+      if(!nameEl||!phoneEl||!emailEl||!err)return;
+      var name=(nameEl.value||'').trim();
+      var cc=(ccEl&&ccEl.value)||'+57';
+      var phone=(phoneEl.value||'').replace(/\D/g,'');
+      var email=(emailEl.value||'').trim();
+      var bf=!!(bfEl&&bfEl.checked), pet=!!(petEl&&petEl.checked);
+      function fail(m){ err.textContent=m; err.style.display='block'; }
+      if(name.length<2)return fail('Ingresa tu nombre completo');
+      if(phone.length<7)return fail('Número de WhatsApp inválido (mín. 7 dígitos)');
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return fail('Correo electrónico inválido');
+      var c=ctx(), eventId='lead_'+Date.now();
+      var _fbclid=new URLSearchParams(location.search).get('fbclid');
+      if(_fbclid){try{localStorage.setItem('_fbc_ls','fb.1.'+Date.now()+'.'+_fbclid);}catch(e){}}
+      var _lsFbc=''; try{_lsFbc=localStorage.getItem('_fbc_ls')||'';}catch(e){}
+      var _fbc=(_fbclid?'fb.1.'+Date.now()+'.'+_fbclid:'')||_lsFbc||(document.cookie.match(/_fbc=([^;]+)/)||[])[1]||'';
+      var _fbp=(document.cookie.match(/_fbp=([^;]+)/)||[])[1]||'';
+      if(typeof fbq!=='undefined')fbq('track','Lead',{content_name:'Hotel Poma Rosa',eventID:eventId});
+      var roomImage=selected.img?(location.origin+'/'+selected.img):'';
+      fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({hotel:'pomarosa',nombre:name,whatsapp:cc+phone,email:email,checkin:c.ci,checkout:c.co,personas:c.g,habitacion:selected.name,roomImage:roomImage,eventId:eventId,fbp:_fbp,fbc:_fbc,source_url:location.href})}).catch(function(){});
+      var extras=''; if(bf)extras+=' Con desayuno.'; if(pet)extras+=' Viajo con mascota.';
+      var fechas=(c.ci&&c.co)?(' del '+c.ci+' al '+c.co):'';
+      var msg=encodeURIComponent('Hola, soy '+name+'. Quiero reservar '+selected.name+fechas+' para '+c.g+'.'+extras+' Mi WhatsApp: '+cc+phone);
+      var waUrl='https://wa.me/573146544069?text='+msg;
+      var w=window.open(waUrl,'_blank');
+      closeModal();
+      if(!w)location.href=waUrl;
+    }
+    if(btn){ btn.addEventListener('click',function(e){ e.preventDefault(); openModal(); }); }
+    modal.addEventListener('click',function(e){ if(Date.now()-openedAt<450)return; if(e.target.classList.contains('bkmodal-bg'))closeModal(); });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&modal.classList.contains('open'))closeModal(); });
+  })();
 </script>
 </body>
 </html>

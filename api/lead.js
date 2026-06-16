@@ -120,6 +120,23 @@ const HOTEL_CONFIG = {
 const FOOTER_LISA_LOGO   = 'https://orucampestre.miranetsas.com.co/assets/lisa-logo.png';
 const FOOTER_MIRANET_LOGO = 'https://orucampestre.miranetsas.com.co/assets/miranet-logo.png';
 
+// ─── Imágenes de habitación por hotel (fallback si el front no envía roomImage) ──
+// Se evalúan en orden; la primera coincidencia gana.
+const ROOM_IMAGE_MAP = {
+  pomarosa: [
+    { match: /triple|familiar|cu[aá]drupl|grupo/i, url: 'https://pomarosa.miranetsas.com.co/assets/hab-10.png' },
+    { match: /doble|sencilla|matrimonial|pareja|individual/i, url: 'https://pomarosa.miranetsas.com.co/assets/hab-01.png' },
+  ],
+};
+
+function resolveRoomImage(hotel, habitacion, provided) {
+  if (provided && /^https?:\/\//i.test(provided)) return provided;
+  const list = ROOM_IMAGE_MAP[hotel];
+  if (!list) return '';
+  const hit = list.find((r) => r.match.test(habitacion || ''));
+  return hit ? hit.url : (list[0] ? list[0].url : '');
+}
+
 // ─── Helpers ────────────────────────────────────────────────────────────────────
 function sha256(v) {
   return crypto.createHash('sha256').update(String(v).trim().toLowerCase()).digest('hex');
@@ -158,7 +175,7 @@ async function appendToSheets({ hotel, nombre, whatsapp, email, checkin, checkou
 
 // ─── Email HTML builder ──────────────────────────────────────────────────────────
 function buildHotelEmailHtml(cfg, data, isAdmin) {
-  const { nombre, whatsapp, email, checkin, checkout, personas, habitacion } = data;
+  const { nombre, whatsapp, email, checkin, checkout, personas, habitacion, roomImage } = data;
   const { name, bg, bgRgb, surface, accent, accentRgb, cream, creamDim, logoUrl, logoLetter, tagline, wa } = cfg;
 
   const now = new Date().toLocaleString('es-CO', {
@@ -235,6 +252,24 @@ function buildHotelEmailHtml(cfg, data, isAdmin) {
             <div style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;color:${creamDim};margin-top:9px;line-height:1.7">${subtitle}</div>
           </td>
         </tr>
+${roomImage ? `
+        <!-- ─── ROOM IMAGE ─── -->
+        <tr>
+          <td style="padding:0;line-height:0;font-size:0">
+            <img src="${roomImage}" width="560" alt="${habitacion || 'Habitación'}" style="width:100%;max-width:560px;height:auto;display:block;border:0;outline:none;text-decoration:none">
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:12px 36px 0;border-bottom:1px solid rgba(255,255,255,0.07)">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;color:${creamDim};letter-spacing:0.04em;padding-bottom:12px">
+                  <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background-color:${accent};margin-right:8px">&nbsp;</span><span style="color:${cream};font-weight:500;font-size:13px">${habitacion || 'Habitación'}</span>&nbsp; <span style="color:${creamDim}">· Foto de referencia</span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>` : ''}
 
         <!-- ─── DETAILS ─── -->
         <tr>
@@ -321,11 +356,11 @@ function buildRawEmail(to, subject, html, fromName) {
 }
 
 // ─── Send emails ─────────────────────────────────────────────────────────────────
-async function sendEmails({ hotel, nombre, whatsapp, email, checkin, checkout, personas, habitacion }) {
+async function sendEmails({ hotel, nombre, whatsapp, email, checkin, checkout, personas, habitacion, roomImage }) {
   if (!process.env.GOOGLE_REFRESH_TOKEN) return;
 
   const cfg = HOTEL_CONFIG[hotel] || { name: hotel, bg: '#111', bgRgb: '17,17,17', surface: '#1a1a1a', accent: '#888', accentRgb: '136,136,136', cream: '#eee', creamDim: '#aaa', logoUrl: null, tagline: '', wa: '' };
-  const data = { hotel, nombre, whatsapp, email, checkin, checkout, personas, habitacion };
+  const data = { hotel, nombre, whatsapp, email, checkin, checkout, personas, habitacion, roomImage: resolveRoomImage(hotel, habitacion, roomImage) };
   const auth = getOAuth2Client();
   const gmail = google.gmail({ version: 'v1', auth });
 
@@ -361,7 +396,7 @@ async function sendEmails({ hotel, nombre, whatsapp, email, checkin, checkout, p
 }
 
 // ─── Handler ──────────────────────────────────────────────────────────────────────
-module.exports = async function handler(req, res) {
+async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -383,6 +418,7 @@ module.exports = async function handler(req, res) {
     checkout = '',
     personas = '',
     habitacion = '',
+    roomImage = '',
     fbp = '',
     fbc = '',
     eventId,
@@ -434,10 +470,19 @@ module.exports = async function handler(req, res) {
 
   // ─── Emails ───────────────────────────────────────────────────────────────────
   try {
-    await sendEmails({ hotel, nombre, whatsapp, email, checkin, checkout, personas, habitacion });
+    await sendEmails({ hotel, nombre, whatsapp, email, checkin, checkout, personas, habitacion, roomImage });
   } catch (e) {
     console.error('[Email]', e.message);
   }
 
   res.status(200).json({ ok: true });
-};
+}
+
+module.exports = handler;
+module.exports.handler = handler;
+module.exports.sendEmails = sendEmails;
+module.exports.buildHotelEmailHtml = buildHotelEmailHtml;
+module.exports.buildRawEmail = buildRawEmail;
+module.exports.getOAuth2Client = getOAuth2Client;
+module.exports.resolveRoomImage = resolveRoomImage;
+module.exports.HOTEL_CONFIG = HOTEL_CONFIG;
