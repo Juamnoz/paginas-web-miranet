@@ -79,6 +79,16 @@
       "source": "/(.*)",
       "has": [{ "type": "host", "value": "history.miranetsas.com.co" }],
       "destination": "/miranet-webs/history/$1"
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "zonafranca.miranetsas.com.co" }],
+      "destination": "/miranet-webs/zona-franca/zona-franca.html"
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "zonafranca.miranetsas.com.co" }],
+      "destination": "/miranet-webs/zona-franca/$1"
     }
   ]
 }

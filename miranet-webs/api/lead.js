@@ -10,6 +10,7 @@ const PIXEL_MAP = {
   pomarosa:    '1459620725920196',
   suites44:    '1459620725920196',
   terrabella:  '2775037422862248',
+  zonafranca:  '853949500693529',
 };
 
 const SOURCE_URL_MAP = {
@@ -22,6 +23,7 @@ const SOURCE_URL_MAP = {
   pomarosa:    'https://pomarosa.miranetsas.com.co/',
   suites44:    'https://suites44.miranetsas.com.co/',
   terrabella:  'https://terrabella.miranetsas.com.co/',
+  zonafranca:  'https://zonafranca.miranetsas.com.co/',
 };
 
 const HOTEL_NAMES = {
@@ -34,6 +36,7 @@ const HOTEL_NAMES = {
   pomarosa:    'Hotel Poma Rosa',
   suites44:    'Hotel Suites 44 Laureles',
   terrabella:  'Hotel Terrabella',
+  zonafranca:  'Finca Hotel Zona Franca',
 };
 
 function sha256(v) {
