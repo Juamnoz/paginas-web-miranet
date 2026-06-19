@@ -6,7 +6,7 @@
   <meta name="description" content="Finca Hotel Zona Franca — Hospedaje campestre en Rionegro, cerca del Aeropuerto JMC, San Antonio de Pereira y La Ceja. Pet friendly. Pareja desde $120.000/noche." />
   <title>Finca Hotel Zona Franca · Rionegro · Oriente Antioqueño</title>
 
-  <link rel="icon" type="image/png" href="assets/hab-1.png" />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
@@ -66,7 +66,7 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .nav-logo { height: 38px; width: 38px; border-radius: 10px; object-fit: cover; }
+    .nav-logo { height: 42px; width: auto; border-radius: 10px; object-fit: contain; display: block; }
     .nav-cta {
       font-family: var(--font-b); font-size: 12px; font-weight: 500;
       letter-spacing: 0.05em; color: var(--bg);
@@ -82,7 +82,13 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       min-height: 100svh; padding: 88px 28px 52px; position: relative;
     }
-    .hero-content { text-align: center; display: flex; flex-direction: column; align-items: center; }
+    .hero-content { text-align: center; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2; }
+
+    /* Video de fondo del hero */
+    .hero-bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+    .hero-bg-overlay { position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background: linear-gradient(to bottom, rgba(8,6,4,0.72) 0%, rgba(8,6,4,0.55) 42%, rgba(8,6,4,0.92) 100%); }
+    .hero-text-zone .scroll-hint { position: relative; z-index: 2; }
 
     /* Logo tipográfico hero */
     .hero-logo-wrap {
@@ -268,18 +274,6 @@
     .tarifa-note-small { font-size: 10px; color: var(--muted); margin-top: 3px; }
     .tarifa-pax { font-size: 11px; font-weight: 400; color: var(--cream-dim); }
 
-    /* ─── PISCINA SECTION ───────────── */
-    .piscina-section { position: relative; min-height: 100svh; overflow: hidden; display: flex; align-items: flex-end; }
-    .piscina-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s ease; }
-    .piscina-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(8,6,4,0.94) 0%, rgba(8,6,4,0.76) 45%, rgba(8,6,4,0.2) 100%); }
-    .piscina-title-block { position: absolute; top: 52px; left: 28px; right: 28px; z-index: 2; max-width: 360px; opacity: 0; transform: translateY(-22px); transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out); }
-    .piscina-desc-block { position: absolute; bottom: 48px; left: 28px; right: 28px; z-index: 2; max-width: 340px; opacity: 0; transform: translateY(22px); transition: opacity 0.9s var(--ease-out) 0.3s, transform 0.9s var(--ease-out) 0.3s; }
-    .piscina-section.piscina-in .piscina-title-block,
-    .piscina-section.piscina-in .piscina-desc-block { opacity: 1; transform: translateY(0); }
-    .piscina-section.piscina-in .piscina-bg { opacity: 1; }
-    .zona-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-    .zona-chip { font-size: 10px; font-weight: 400; letter-spacing: 0.06em; color: var(--cream-dim); background: rgba(196,120,58,0.12); border: 1px solid var(--border-h); padding: 5px 12px; border-radius: 100px; }
-
     /* ─── GALERÍA ──────────────────── */
     .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 32px; border-radius: var(--r-md); overflow: hidden; }
     .gallery-item { position: relative; overflow: hidden; cursor: pointer; }
@@ -399,8 +393,6 @@
       .gallery-grid { grid-template-columns: 1fr 1fr 1fr; }
       .gallery-item:first-child { grid-column: 1 / 2; grid-row: 1 / 3; aspect-ratio: unset; }
       .gallery-item:not(:first-child) { aspect-ratio: 4/3; }
-      .piscina-title-block { top: 80px; left: 56px; max-width: 480px; }
-      .piscina-desc-block  { bottom: 56px; left: 56px; max-width: 420px; }
       .hero-slider-zone { padding: 48px; }
       .amenities-slider { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; overflow: visible; padding: 0; scroll-snap-type: none; touch-action: auto; cursor: default; }
       .slider-slide { flex: none; width: 100%; max-width: none; scroll-snap-align: none; aspect-ratio: 3/4; }
@@ -482,16 +474,18 @@
 
 <!-- NAV -->
 <nav id="nav">
-  <span class="nav-logo" style="font-family:var(--font-d);font-size:19px;letter-spacing:0.02em;color:var(--cream);">Zona Franca</span>
+  <a href="#inicio" aria-label="Finca Hotel Zona Franca"><img src="assets/logo.png" alt="Finca Hotel Zona Franca" class="nav-logo" /></a>
   <a href="#reservas" class="nav-cta">Reservar</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero" id="inicio">
   <div class="hero-text-zone">
+    <video class="hero-bg-video" autoplay muted loop playsinline poster="assets/video-poster.jpg"><source src="assets/video-zonafranca.mp4" type="video/mp4"></video>
+    <div class="hero-bg-overlay"></div>
     <div class="hero-content">
       <div class="hero-logo-wrap">
-        <img src="assets/hab-1.png" alt="Finca Hotel Zona Franca" style="width:clamp(200px,60vw,320px); border-radius:20px; box-shadow:0 4px 28px rgba(0,0,0,0.45);" />
+        <img src="assets/logo.png" alt="Finca Hotel Zona Franca" style="width:clamp(180px,52vw,280px); border-radius:20px; box-shadow:0 8px 36px rgba(0,0,0,0.5);" />
       </div>
       <p class="hero-eyebrow">Vereda Chachafruto · Rionegro</p>
       <h1 class="hero-title">Naturaleza,<br /><em>descanso</em> y aire puro</h1>
@@ -734,28 +728,6 @@
 
 </section>
 
-<!-- PISCINA / ZONAS SECTION -->
-<section class="piscina-section" id="zonas">
-  <video class="piscina-bg" id="piscinaBg" autoplay muted loop playsinline poster="assets/video-poster.jpg"><source src="assets/video-zonafranca.mp4" type="video/mp4"></video>
-  <div class="piscina-overlay"></div>
-  <div class="piscina-title-block">
-    <p class="section-eyebrow reveal">El entorno</p>
-    <h2 class="section-title reveal reveal-delay-1">Naturaleza,<br /><em>aire puro</em><br />y tranquilidad</h2>
-  </div>
-  <div class="piscina-desc-block">
-    <div class="gold-divider reveal"></div>
-    <p class="section-body reveal reveal-delay-1" style="max-width:300px; font-size:14px;">
-      Una zona campestre, plana y de clima ideal en el Oriente Antioqueño. Despierta rodeado de
-      naturaleza, a pocos minutos de los pueblos más encantadores de la región.
-    </p>
-    <div class="zona-chips reveal reveal-delay-2">
-      <span class="zona-chip">🌿 Zona campestre</span>
-      <span class="zona-chip">✈️ Cerca del aeropuerto</span>
-      <span class="zona-chip">🐾 Pet friendly</span>
-    </div>
-  </div>
-</section>
-
 <!-- GALERÍA -->
 <section id="galeria" style="padding: 72px 24px;">
   <p class="section-eyebrow reveal">Galería</p>
@@ -908,7 +880,6 @@
     <a href="#el-hotel">El Hotel</a>
     <a href="#amenidades-sec">Incluido</a>
     <a href="#tarifas">Tarifas</a>
-    <a href="#zonas">Entorno</a>
     <a href="#galeria">Galería</a>
     <a href="#reservas">Reservar</a>
     <a href="#contacto">Contacto</a>
@@ -943,14 +914,6 @@
 <script>
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60), { passive: true });
-
-  const piscinaSec = document.getElementById('zonas');
-  const piscinaBg  = document.getElementById('piscinaBg');
-  if (piscinaSec) {
-    new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { piscinaSec.classList.add('piscina-in'); if (piscinaBg) piscinaBg.style.opacity = '1'; }
-    }, { threshold: 0.15 }).observe(piscinaSec);
-  }
 
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } });
