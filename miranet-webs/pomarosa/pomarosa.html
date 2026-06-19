@@ -47,7 +47,7 @@
       --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; max-width: 100%; }
     body {
       background: var(--bg);
       color: var(--cream);
@@ -324,7 +324,7 @@
     .hb-field { flex: 1; display: flex; flex-direction: column; gap: 3px; padding: 12px 16px; border-radius: 14px; position: relative; cursor: pointer; transition: background .2s; text-align: left; min-width: 0; touch-action: manipulation; }
     .hb-field:hover { background: rgba(255,255,255,0.05); }
     .hb-label { font-family: var(--font-b); font-size: 9px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-dim); }
-    .hb-input { background: transparent; border: none; outline: none; color: var(--cream); font-family: var(--font-b); font-size: 14px; font-weight: 400; padding: 0; width: 100%; cursor: pointer; }
+    .hb-input { background: transparent; border: none; outline: none; color: var(--cream); font-family: var(--font-b); font-size: 16px; font-weight: 400; padding: 0; width: 100%; cursor: pointer; }
     .hb-input::placeholder { color: var(--muted); }
     .hb-select { -webkit-appearance: none; appearance: none; padding-right: 18px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a8967e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right center; }
     .hb-cal { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; display: flex; }
@@ -404,7 +404,7 @@
     .lead-row { display: flex; gap: 14px; }
     .lead-field { display: flex; flex-direction: column; gap: 9px; flex: 1; }
     .lead-field label { font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream-dim); opacity: 0.72; }
-    .lead-field input, .lead-field select { -webkit-appearance: none; appearance: none; background: rgba(255,255,255,0.045); border: 1px solid rgba(255,255,255,0.09); border-radius: 14px; padding: 15px 16px; color: var(--cream); font-family: var(--font-b); font-size: 15px; outline: none; transition: border-color .25s, background .25s, box-shadow .25s; width: 100%; }
+    .lead-field input, .lead-field select { -webkit-appearance: none; appearance: none; background: rgba(255,255,255,0.045); border: 1px solid rgba(255,255,255,0.09); border-radius: 14px; padding: 15px 16px; color: var(--cream); font-family: var(--font-b); font-size: 16px; outline: none; transition: border-color .25s, background .25s, box-shadow .25s; width: 100%; }
     .lead-field input:hover, .lead-field select:hover { border-color: rgba(255,255,255,0.16); }
     .lead-field input:focus, .lead-field select:focus { border-color: rgba(196,133,106,0.55); background: rgba(255,255,255,0.06); box-shadow: 0 0 0 4px rgba(196,133,106,0.13); }
     .lead-field input::placeholder { color: var(--muted); }
@@ -419,7 +419,7 @@
     .lead-submit:hover { transform: translateY(-2px); box-shadow: 0 16px 46px rgba(37,211,102,0.42), inset 0 1px 0 rgba(255,255,255,0.25); }
     .lead-submit:active { transform: translateY(0); }
     .phone-wrap { display: flex; gap: 8px; }
-    .phone-cc { -webkit-appearance: none; appearance: none; background: rgba(255,255,255,0.045); border: 1px solid rgba(255,255,255,0.09); border-radius: 14px; padding: 14px 8px; color: var(--cream); font-family: var(--font-b); font-size: 14px; outline: none; transition: border-color .25s, box-shadow .25s; flex-shrink: 0 !important; cursor: pointer; width: 96px !important; }
+    .phone-cc { -webkit-appearance: none; appearance: none; background: rgba(255,255,255,0.045); border: 1px solid rgba(255,255,255,0.09); border-radius: 14px; padding: 14px 8px; color: var(--cream); font-family: var(--font-b); font-size: 16px; outline: none; transition: border-color .25s, box-shadow .25s; flex-shrink: 0 !important; cursor: pointer; width: 96px !important; }
     .phone-cc:focus { border-color: rgba(196,133,106,0.55); box-shadow: 0 0 0 4px rgba(196,133,106,0.13); }
     .phone-cc option { background: #1a1408; }
     .phone-wrap input { flex: 1; min-width: 0; }
