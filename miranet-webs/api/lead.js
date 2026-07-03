@@ -124,11 +124,15 @@ module.exports = async function handler(req, res) {
   const row      = [fecha, hotel, nombre, whatsapp, email, checkin, checkout, personas, habitacion];
   const hotelName = HOTEL_NAMES[hotel] || hotel;
 
-  // Google Sheets + Gmail — fire and forget
+  const tasks = [];
+
+  // Google Sheets + Gmail
   if (process.env.GOOGLE_CLIENT_ID && process.env.SHEETS_ID) {
-    getAccessToken()
-      .then(token => Promise.all([appendToSheets(token, row), sendEmail(token, hotelName, row)]))
-      .catch(e => console.error('[Sheets/Gmail]', e));
+    tasks.push(
+      getAccessToken()
+        .then(token => Promise.all([appendToSheets(token, row), sendEmail(token, hotelName, row)]))
+        .catch(e => console.error('[Sheets/Gmail]', e))
+    );
   }
 
   // Meta CAPI
@@ -138,31 +142,35 @@ module.exports = async function handler(req, res) {
     const phone  = whatsapp.replace(/\D/g, '');
     const parts  = nombre.trim().split(/\s+/);
     const evtUrl = source_url || SOURCE_URL_MAP[hotel] || `https://${hotel}.miranetsas.com.co/`;
-    fetch(`https://graph.facebook.com/v21.0/${pixelId}/events`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        data: [{
-          event_name: 'Lead',
-          event_time: Math.floor(Date.now() / 1000),
-          event_id:   eventId || `lead_${Date.now()}_${hotel}`,
-          event_source_url: evtUrl,
-          action_source: 'website',
-          user_data: {
-            ...(phone    && { ph: [sha256(phone)]                     }),
-            ...(email    && { em: [sha256(email)]                     }),
-            ...(parts[0] && { fn: [sha256(parts[0])]                  }),
-            ...(parts[1] && { ln: [sha256(parts.slice(1).join(' '))]  }),
-            country: ['co'],
-            ...(fbp && { fbp }),
-            ...(fbc && { fbc }),
-          },
-          custom_data: { hotel, checkin, checkout, personas, habitacion },
-        }],
-        access_token: metaToken,
-      }),
-    }).catch(e => console.error(`[CAPI ${hotel}]`, e));
+    tasks.push(
+      fetch(`https://graph.facebook.com/v21.0/${pixelId}/events`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          data: [{
+            event_name: 'Lead',
+            event_time: Math.floor(Date.now() / 1000),
+            event_id:   eventId || `lead_${Date.now()}_${hotel}`,
+            event_source_url: evtUrl,
+            action_source: 'website',
+            user_data: {
+              ...(phone    && { ph: [sha256(phone)]                     }),
+              ...(email    && { em: [sha256(email)]                     }),
+              ...(parts[0] && { fn: [sha256(parts[0])]                  }),
+              ...(parts[1] && { ln: [sha256(parts.slice(1).join(' '))]  }),
+              country: ['co'],
+              ...(fbp && { fbp }),
+              ...(fbc && { fbc }),
+            },
+            custom_data: { hotel, checkin, checkout, personas, habitacion },
+          }],
+          access_token: metaToken,
+        }),
+      }).catch(e => console.error(`[CAPI ${hotel}]`, e))
+    );
   }
+
+  await Promise.all(tasks);
 
   return res.status(200).json({ ok: true });
 };
