@@ -61,7 +61,7 @@ async function getAccessToken() {
 async function appendToSheets(token, row) {
   const sheetId = process.env.SHEETS_ID;
   const range   = encodeURIComponent("'Leads hoteles'!A1");
-  await fetch(
+  const res = await fetch(
     `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
     {
       method: 'POST',
@@ -69,6 +69,10 @@ async function appendToSheets(token, row) {
       body: JSON.stringify({ values: [row] }),
     }
   );
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    throw new Error(`Sheets append falló (${res.status}): ${body}`);
+  }
 }
 
 async function sendEmail(token, hotelName, row) {
@@ -96,11 +100,15 @@ async function sendEmail(token, hotelName, row) {
     `Content-Type: text/html; charset=UTF-8\r\n\r\n` +
     html;
   const raw = Buffer.from(message).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-  await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
+  const res = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ raw }),
   });
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    throw new Error(`Gmail send falló (${res.status}): ${body}`);
+  }
 }
 
 module.exports = async function handler(req, res) {
