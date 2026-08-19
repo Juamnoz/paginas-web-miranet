@@ -91,7 +91,7 @@ async function sendEmail(token, hotelName, row) {
   const fromName = Buffer.from(hotelName).toString('base64');
   const message  =
     `From: =?UTF-8?B?${fromName}?= <aicstudioai@gmail.com>\r\n` +
-    `To: juamnoze@gmail.com\r\n` +
+    `To: juamnoze@gmail.com, miranetcommunity@gmail.com\r\n` +
     `Subject: ${subject}\r\n` +
     `Content-Type: text/html; charset=UTF-8\r\n\r\n` +
     html;
